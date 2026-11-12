@@ -82,7 +82,7 @@ main{max-width:1000px;margin:0 auto;padding:0 14px 60px}
 .exp .core{position:absolute;left:0;top:0;right:0;bottom:0;border-radius:50%;background:#0a0c24;z-index:-1;transition:.25s}
 .exp::after{content:"";position:absolute;left:0;top:0;right:0;bottom:0;border-radius:50%;box-shadow:0 0 0 0 rgba(34,211,238,.6);animation:pulse 2.2s infinite;z-index:-3}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,211,238,.55)}80%,100%{box-shadow:0 0 0 20px rgba(34,211,238,0)}}
-.exp svg{width:28px;height:28px;display:block;margin:auto;position:relative;top:16px;overflow:visible}
+.exp svg{width:28px;height:28px;display:block;margin:auto;position:absolute;inset:0;overflow:visible}
 .exp .arrow{animation:bob 1.5s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
 .exp:hover .core{background:#171a4a}
@@ -393,17 +393,26 @@ Q("إذا كان $a − b = 5$ ، $a^{2} − b^{2} = 20$ فما قيمة $√{a 
 ]];
 const NAMES=['النموذج الأول','النموذج الثاني','النموذج الثالث'];
 
+// 10 أسئلة مصوّرة من كل نموذج = 30 من أصل 75 (40%)
+const ILLUSTRATED = [
+  new Set([0,1,2,3,4,5,12,13,16,24]),
+  new Set([0,1,2,3,4,5,11,18,19,23]),
+  new Set([0,1,2,3,15,16,18,21,22,23])
+];
+
 /* ================== بناء الواجهة ================== */
 let cur=0;
 const $=id=>document.getElementById(id);
 function cardHTML(m,i,q){
   const n=String(i+1).padStart(2,'0');
   const c4=q.o.every(o=>rawLen(o)<=7);
+  const showVisual=ILLUSTRATED[m].has(i);
+  const figure=showVisual?`<div class="banner">${visual(q.v)}<span class="fig-tag">شكل توضيحي</span></div>`:'';
   const opts=q.o.map((o,k)=>`<div class="opt c${k}"><span class="lt">${LET[k]}</span><span class="ov">${R(o)}</span></div>`).join('');
   return `<div class="export-card">
     <div class="ec-head"><div class="qn"><small>سؤال</small><b>${n}</b></div>
       <div class="ec-title"><span>امتحان شامل · الوحدتان الأولى والثانية</span><em>${NAMES[m]}</em></div></div>
-    <div class="banner">${visual(q.v)}<span class="fig-tag">شكل توضيحي</span></div>
+    ${figure}
     <div class="qt">${T(q.t)}</div>
     <div class="opts ${c4?'cols4':'cols2'}">${opts}</div>
     <div class="ec-foot"><span>رياضيات · الصف الثاني الإعدادي</span><span class="dots"><i></i><i></i><i></i></span></div>
