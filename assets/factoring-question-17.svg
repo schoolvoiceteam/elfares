@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 240" role="img" aria-label="Abstract algebra area model with a square, four rectangular tiles and six unit tiles">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#080d37"/><stop offset=".52" stop-color="#10105a"/><stop offset="1" stop-color="#351078"/>
+  </linearGradient>
+  <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#101c6a"/><stop offset="1" stop-color="#8b24d8"/></linearGradient>
+  <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#38e4f6"/><stop offset="1" stop-color="#1762f2"/></linearGradient>
+  <linearGradient id="violet" x1="0" y1="0" x2=".2" y2="1"><stop stop-color="#df64f3"/><stop offset="1" stop-color="#8736f4"/></linearGradient>
+  <linearGradient id="peach" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd078"/><stop offset="1" stop-color="#fa6cb7"/></linearGradient>
+  <linearGradient id="floor" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#0866df"/><stop offset=".48" stop-color="#673cff"/><stop offset=".72" stop-color="#a52cef"/><stop offset="1" stop-color="#4522c4"/></linearGradient>
+  <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="soft" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="12"/></filter>
+</defs>
+<rect width="960" height="240" fill="url(#bg)"/>
+<path d="M0 0H960C852 38 752 40 652 12C563 -13 488 -9 390 19C270 55 178 25 105 0Z" fill="url(#wave)" opacity=".62"/>
+<path d="M0 0H960C856 20 787 28 704 6C612 -18 528 -18 451 0Z" fill="#0c1450" opacity=".5"/>
+<ellipse cx="480" cy="206" rx="426" ry="25" fill="#2857f5" opacity=".38" filter="url(#soft)"/>
+<ellipse cx="480" cy="203" rx="424" ry="18" fill="url(#floor)" opacity=".76"/>
+<ellipse cx="480" cy="202" rx="424" ry="17" fill="none" stroke="#395ffb" stroke-opacity=".55" stroke-width="1.5"/>
+<ellipse cx="480" cy="198" rx="325" ry="7" fill="#7f3cff" opacity=".5" filter="url(#soft)"/>
+<g filter="url(#glow)">
+  <rect x="266" y="55" width="106" height="106" rx="7" fill="url(#blue)" stroke="#61eaff" stroke-width="2"/>
+  <rect x="267.5" y="56.5" width="103" height="103" rx="6" fill="none" stroke="#c7faff" stroke-opacity=".22" stroke-width="1.5"/>
+  <g fill="url(#violet)" stroke="#f0a0ff" stroke-width="1.6" stroke-opacity=".7">
+    <rect x="398" y="54" width="25" height="108" rx="5"/>
+    <rect x="434" y="54" width="25" height="108" rx="5"/>
+    <rect x="470" y="54" width="25" height="108" rx="5"/>
+    <rect x="506" y="54" width="25" height="108" rx="5"/>
+  </g>
+  <g fill="url(#peach)" stroke="#ffd8d3" stroke-width="1.2" stroke-opacity=".8">
+    <rect x="564" y="69" width="28" height="28" rx="5"/>
+    <rect x="603" y="69" width="28" height="28" rx="5"/>
+    <rect x="642" y="69" width="28" height="28" rx="5"/>
+    <rect x="564" y="108" width="28" height="28" rx="5"/>
+    <rect x="603" y="108" width="28" height="28" rx="5"/>
+    <rect x="642" y="108" width="28" height="28" rx="5"/>
+  </g>
+</g>
+</svg>
