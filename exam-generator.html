@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مصنع الأسئلة · رياضيات ٢ إعدادي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&family=Noto+Sans+Math&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+:root{
+  --bg:#05060f; --ink:#eef2ff; --mut:#94a3b8;
+  --cy:#22d3ee; --vi:#8b5cf6; --pk:#f472b6; --li:#a3e635; --am:#fbbf24;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans Arabic',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* ============ خلفية مستقبلية ============ */
+.bg{position:fixed;left:0;top:0;right:0;bottom:0;z-index:-1;overflow:hidden;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;animation:float 18s ease-in-out infinite}
+.b1{width:520px;height:520px;background:#6d28d9;top:-140px;right:-120px}
+.b2{width:460px;height:460px;background:#0891b2;bottom:-120px;left:-100px;animation-delay:-6s}
+.b3{width:380px;height:380px;background:#be185d;top:40%;left:35%;opacity:.28;animation-delay:-11s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-50px) scale(1.12)}}
+.gridbg{position:absolute;left:0;top:0;right:0;bottom:0;
+  background-image:linear-gradient(rgba(148,163,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,255,.07) 1px,transparent 1px);
+  background-size:54px 54px;-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 30%,#000 25%,transparent 75%)}
+.scan{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(34,211,238,.6),transparent);animation:scan 7s linear infinite}
+@keyframes scan{from{top:-5%}to{top:105%}}
+
+/* ============ الهيرو ============ */
+.hero{max-width:1040px;margin:0 auto;padding:54px 20px 18px;text-align:center;position:relative}
+.orbit{width:116px;height:116px;margin:0 auto 14px;position:relative}
+.orbit svg{width:100%;height:100%;overflow:visible}
+.orbit .r1{transform-origin:58px 58px;animation:spin 9s linear infinite}
+.orbit .r2{transform-origin:58px 58px;animation:spin 14s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:6px 16px;border-radius:999px;border:1px solid rgba(34,211,238,.4);background:rgba(34,211,238,.08);color:#a5f3fc;font-size:14px;font-weight:500}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--cy);box-shadow:0 0 12px var(--cy);animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.25}}
+h1{margin:16px 0 8px;font-weight:700;font-size:clamp(34px,6.4vw,66px);line-height:1.2;
+  background:linear-gradient(100deg,#67e8f9,#a78bfa 40%,#f472b6 70%,#fbbf24);background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 8s linear infinite}
+@keyframes shine{to{background-position:-220% 0}}
+.sub{color:#b4bfe6;font-size:clamp(15px,2.4vw,19px);font-weight:300;max-width:640px;margin:0 auto;line-height:1.9}
+
+/* ============ شريط الأدوات ============ */
+.toolbar{position:sticky;top:10px;z-index:30;max-width:1000px;margin:22px auto 26px;padding:12px 14px;
+  border-radius:22px;border:1px solid rgba(165,180,252,.25);background:rgba(10,12,36,.72);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 18px 50px rgba(0,0,0,.45);
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.tabs{display:flex;gap:6px;background:rgba(255,255,255,.05);padding:5px;border-radius:16px}
+.tab{border:0;cursor:pointer;color:#c7d2fe;background:transparent;font:500 15px 'IBM Plex Sans Arabic';padding:10px 18px;border-radius:12px;transition:.25s}
+.tab:hover{color:#fff;background:rgba(255,255,255,.07)}
+.tab.on{color:#06081a;font-weight:700;background:linear-gradient(135deg,#67e8f9,#a78bfa);box-shadow:0 6px 22px rgba(103,232,249,.35)}
+.ctrls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sel{display:flex;align-items:center;gap:6px;color:#a5b4fc;font-size:13px}
+select{appearance:none;-webkit-appearance:none;background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(165,180,252,.3);border-radius:12px;padding:9px 14px;font:500 14px 'IBM Plex Sans Arabic';cursor:pointer}
+select option{color:#111}
+.tg{display:flex;align-items:center;gap:8px;color:#c7d2fe;font-size:14px;cursor:pointer;user-select:none}
+.sw{width:42px;height:24px;border-radius:99px;background:rgba(255,255,255,.14);position:relative;transition:.25s}
+.sw::after{content:"";position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.25s}
+.tg input{display:none}
+.tg input:checked+.sw{background:linear-gradient(135deg,#22d3ee,#8b5cf6)}
+.tg input:checked+.sw::after{right:21px}
+.zipbtn{border:0;cursor:pointer;color:#06081a;font:700 14px 'IBM Plex Sans Arabic';padding:10px 18px;border-radius:14px;background:linear-gradient(135deg,#a3e635,#22d3ee);box-shadow:0 8px 24px rgba(163,230,53,.28);transition:.25s}
+.zipbtn:hover{transform:translateY(-2px)}
+
+/* ============ قائمة الأسئلة ============ */
+main{max-width:1000px;margin:0 auto;padding:0 14px 60px}
+.q{position:relative;margin:0 auto 34px;max-width:960px;animation:rise .6s both}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.fit{position:relative;width:100%}
+.fit>.export-card{position:absolute;right:0;top:0;transform-origin:100% 0}
+
+/* زر التصدير المتحرك */
+.exp{position:absolute;top:22px;left:24px;width:60px;height:60px;border-radius:50%;border:0;padding:0;cursor:pointer;background:transparent;z-index:5;isolation:isolate}
+.exp .ring{position:absolute;left:-3px;top:-3px;right:-3px;bottom:-3px;border-radius:50%;background:conic-gradient(#22d3ee,#8b5cf6,#f472b6,#fbbf24,#22d3ee);animation:spin 3.2s linear infinite;z-index:-2}
+.exp .core{position:absolute;left:0;top:0;right:0;bottom:0;border-radius:50%;background:#0a0c24;z-index:-1;transition:.25s}
+.exp::after{content:"";position:absolute;left:0;top:0;right:0;bottom:0;border-radius:50%;box-shadow:0 0 0 0 rgba(34,211,238,.6);animation:pulse 2.2s infinite;z-index:-3}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,211,238,.55)}80%,100%{box-shadow:0 0 0 20px rgba(34,211,238,0)}}
+.exp svg{width:28px;height:28px;display:block;margin:auto;position:relative;top:16px;overflow:visible}
+.exp .arrow{animation:bob 1.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
+.exp:hover .core{background:#171a4a}
+.exp:hover{transform:scale(1.1)}
+.exp:active{transform:scale(.94)}
+.exp .ok,.exp .spn{display:none}
+.exp.busy .arrow,.exp.busy .tray{display:none}
+.exp.busy .spn{display:block;transform-origin:14px 14px;animation:spin .8s linear infinite}
+.exp.done .arrow,.exp.done .tray{display:none}
+.exp.done .ok{display:block}
+.exp .tip{position:absolute;top:70px;left:50%;transform:translateX(-50%);white-space:nowrap;font:500 12px 'IBM Plex Sans Arabic';color:#cffafe;background:#0a0c24;border:1px solid rgba(34,211,238,.4);padding:4px 10px;border-radius:8px;opacity:0;pointer-events:none;transition:.2s}
+.exp:hover .tip{opacity:1}
+
+/* شريط الإجابة (لا يُصدَّر) */
+.ans{margin:12px 6px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 18px;border-radius:16px;
+  border:1px dashed rgba(163,230,53,.5);background:rgba(163,230,53,.07);color:#d9f99d;font-size:16px}
+.ans .lock{font-size:13px;color:#86efac;opacity:.85}
+.ans b{display:inline-grid;place-items:center;min-width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#bef264,#4ade80);color:#052e16;font-size:19px}
+.ans .m{color:#ecfccb}
+body.hide-ans .ans{display:none}
+
+/* ============ بطاقة التصدير (ما يظهر في الصورة) ============ */
+.export-card{width:960px;padding:34px 38px 26px;border-radius:30px;direction:rtl;color:#eef2ff;
+  font-family:'IBM Plex Sans Arabic',sans-serif;position:relative;overflow:hidden;
+  background:radial-gradient(520px 260px at 90% -5%,rgba(139,92,246,.5),rgba(139,92,246,0) 70%),
+             radial-gradient(520px 300px at -5% 105%,rgba(34,211,238,.3),rgba(34,211,238,0) 70%),
+             linear-gradient(160deg,#0a0c24 0%,#12123a 55%,#1b1040 100%);
+  border:2px solid rgba(129,140,248,.5)}
+.ec-head{display:flex;align-items:center;gap:18px;padding-left:84px;min-height:62px}
+.qn{display:flex;align-items:baseline;gap:8px;padding:8px 20px;border-radius:16px;
+  background:linear-gradient(135deg,rgba(34,211,238,.22),rgba(139,92,246,.28));border:1.5px solid rgba(34,211,238,.6)}
+.qn small{font-size:18px;color:#a5f3fc;font-weight:500}
+.qn b{font:700 34px/1.1 'Space Grotesk',sans-serif;color:#fff}
+.ec-title{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ec-title span{font-size:21px;font-weight:500;color:#b4bfff}
+.ec-title em{font-style:normal;font-size:17px;font-weight:600;color:#fbcfe8;padding:4px 16px;border-radius:999px;background:rgba(244,114,182,.18);border:1.5px solid rgba(244,114,182,.55)}
+.banner{position:relative;height:176px;margin:20px 0 22px;border-radius:22px;display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:radial-gradient(circle at 1px 1px,rgba(165,180,252,.24) 1.4px,rgba(165,180,252,0) 1.7px) 0 0/22px 22px,linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  border:1.5px solid rgba(165,180,252,.28)}
+.fig-tag{position:absolute;top:10px;left:16px;font-size:13px;font-weight:500;color:#93c5fd;opacity:.85}
+.fig{position:relative;width:600px;height:160px;flex:none}
+.fig svg{position:absolute;left:0;top:0}
+.qt{font-size:36px;font-weight:600;line-height:1.8;color:#f8fafc;margin:4px 4px 24px}
+.m{font-family:'STIX Two Text','Noto Sans Math','Cambria Math',serif;font-weight:500;font-size:1.14em;direction:ltr;unicode-bidi:isolate;white-space:nowrap;display:inline-block;color:#c4f1ff}
+.m i{font-style:italic}
+.m sup{font-size:.66em;line-height:0;position:relative;top:-.12em;margin-left:1px}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;font-size:.88em;line-height:1.2}
+.fr>span:first-child{border-bottom:.07em solid currentColor;padding:0 .25em .06em}
+.fr>span:last-child{padding:.06em .25em 0}
+.rad{display:inline-block;white-space:nowrap}
+.rad .ix{font-size:.55em;position:relative;top:-.62em;margin-right:-.1em}
+.rad .rs{display:inline-block;font-size:1.08em}
+.rad .rc{display:inline-block;border-top:.075em solid currentColor;padding:.05em .12em 0 .1em;margin-left:-.1em;line-height:1.2}
+.blank{display:inline-block;width:78px;height:0;border-bottom:3px dashed rgba(251,191,36,.9);margin:0 6px;vertical-align:-.1em}
+.opts{display:grid;gap:14px}
+.cols4{grid-template-columns:repeat(4,1fr)}
+.cols2{grid-template-columns:repeat(2,1fr)}
+.opt{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:20px;min-height:76px;
+  background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.18)}
+.lt{flex:none;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#06081a;line-height:1}
+.c0 .lt{background:linear-gradient(135deg,#a5f3fc,#22d3ee)}
+.c1 .lt{background:linear-gradient(135deg,#ddd6fe,#a78bfa)}
+.c2 .lt{background:linear-gradient(135deg,#fbcfe8,#f472b6)}
+.c3 .lt{background:linear-gradient(135deg,#fde68a,#fbbf24)}
+.ov{flex:1;text-align:center;font-size:31px;color:#fff;line-height:1.5}
+.ov .m{color:#fff}
+.cols4 .lt{width:40px;height:40px;font-size:21px}
+.cols4 .ov{font-size:29px}
+.cols4 .opt{gap:10px;padding:12px 12px}
+.ec-foot{margin-top:22px;display:flex;justify-content:space-between;align-items:center;color:#8ea0c9;font-size:16px;font-weight:400}
+.dots{display:flex;gap:7px}
+.dots i{width:10px;height:10px;border-radius:50%;display:block}
+.dots i:nth-child(1){background:#22d3ee}.dots i:nth-child(2){background:#a78bfa}.dots i:nth-child(3){background:#f472b6}
+
+/* خط الأعداد */
+.nl{position:relative;width:100%;height:100%;direction:ltr;font-family:'STIX Two Text','Noto Sans Math',serif}
+.nl .ax{position:absolute;left:2%;right:2%;top:103px;height:3px;border-radius:2px;background:linear-gradient(90deg,#6366f1,#22d3ee,#6366f1)}
+.nl .axl,.nl .axr{position:absolute;top:97px;width:0;height:0;border:7px solid transparent}
+.nl .axl{left:0.4%;border-right:12px solid #6366f1;border-left:0}
+.nl .axr{right:0.4%;border-left:12px solid #6366f1;border-right:0}
+.nl .tk{position:absolute;top:98px;width:2px;height:13px;margin-left:-1px;background:#7c86c9}
+.nl .tl{position:absolute;top:114px;width:44px;margin-left:-22px;text-align:center;font-size:21px;color:#dbe4ff}
+.nl .tl .m{color:#dbe4ff;font-size:1em}
+.nl .bar{position:absolute;height:8px;border-radius:4px;opacity:.92}
+.nl .dt{position:absolute;width:18px;height:18px;margin-left:-9px;border-radius:50%;border:3px solid}
+.nl .vl{position:absolute;width:0;margin-left:-1px;border-left:2px dashed;opacity:.7}
+.nl .arrL,.nl .arrR{position:absolute;width:0;height:0;border:9px solid transparent}
+.nl .pt{position:absolute;width:16px;height:16px;margin-left:-8px;top:96px;background:#fbbf24;transform:rotate(45deg);box-shadow:0 0 14px #fbbf24}
+.nl .ptl{position:absolute;top:140px;width:90px;margin-left:-45px;text-align:center;font-size:20px;color:#fde68a}
+.nl .ptl .m{color:#fde68a}
+.venn-l{position:absolute;font-family:'STIX Two Text','Noto Sans Math',serif;font-size:30px;font-weight:600;text-align:center;width:80px;margin-left:-40px;margin-top:-18px;line-height:1.2}
+
+/* ============ تذييل ============ */
+footer{text-align:center;color:#64748b;font-size:13px;padding:10px 0 40px}
+#stage{position:absolute;left:-12000px;top:0;width:960px}
+.modal{position:fixed;left:0;top:0;right:0;bottom:0;z-index:100;background:rgba(3,4,12,.8);display:none;align-items:center;justify-content:center}
+.modal.on{display:flex}
+.mbox{width:min(420px,88vw);padding:28px;border-radius:24px;background:#0d0f2e;border:1px solid rgba(165,180,252,.35);text-align:center}
+.mbox h3{margin:0 0 6px;font-size:20px}
+.mbox p{margin:0 0 18px;color:#a5b4fc;font-size:14px}
+.pbar{height:12px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6);transition:width .25s}
+@media(max-width:700px){.toolbar{top:6px;border-radius:18px}.exp{top:14px;left:16px}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="gridbg"></div><div class="scan"></div></div>
+
+<header class="hero">
+  <div class="orbit">
+    <svg viewBox="0 0 116 116">
+      <defs><linearGradient id="og" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#f472b6"/></linearGradient></defs>
+      <g class="r1"><ellipse cx="58" cy="58" rx="54" ry="20" fill="none" stroke="url(#og)" stroke-width="2" transform="rotate(30 58 58)"/><circle cx="104" cy="40" r="5" fill="#22d3ee"/></g>
+      <g class="r2"><ellipse cx="58" cy="58" rx="54" ry="20" fill="none" stroke="#a78bfa" stroke-width="2" opacity=".8" transform="rotate(-30 58 58)"/><circle cx="12" cy="40" r="5" fill="#f472b6"/></g>
+      <circle cx="58" cy="58" r="20" fill="url(#og)"/>
+      <path d="M46 59 L52 56 L58 68 L68 47 L74 47" fill="none" stroke="#06081a" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <span class="eyebrow"><i></i> الصف الثاني الإعدادي · الوحدتان الأولى والثانية</span>
+  <h1>مصنع الأسئلة</h1>
+  <p class="sub">٧٥ سؤالًا في ثلاثة نماذج متكافئة. اضغط على الأيقونة المتحركة بجانب أي سؤال لتصدّره كصورة عالية الدقة — الإجابات تظهر هنا فقط ولا تدخل في الصورة.</p>
+</header>
+
+<div class="toolbar">
+  <div class="tabs" id="tabs"></div>
+  <div class="ctrls">
+    <label class="sel">الصيغة <select id="fmt"><option value="png">PNG</option><option value="webp">WebP</option></select></label>
+    <label class="sel">الدقة <select id="scale"><option value="2">2× عادية</option><option value="3" selected>3× عالية</option><option value="4">4× فائقة</option></select></label>
+    <label class="tg"><input type="checkbox" id="showAns" checked><span class="sw"></span>الإجابات</label>
+    <button class="zipbtn" id="zipBtn">تحميل النموذج ZIP</button>
+  </div>
+</div>
+
+<main id="list"></main>
+<footer>الإجابات الظاهرة أسفل كل سؤال لا تُضمَّن في الصور المُصدَّرة</footer>
+<div id="stage"></div>
+<div class="modal" id="modal"><div class="mbox"><h3>جارٍ تجهيز الصور…</h3><p id="mtxt">0 / 25</p><div class="pbar"><i id="mbar"></i></div></div></div>
+
+<script>
+/* ================== أدوات العرض الرياضي ================== */
+const LET=['أ','ب','ج','د'];
+const COL=['#22d3ee','#f472b6','#a3e635'];
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function grp(s,i){let d=0,j=i;for(;j<s.length;j++){if(s[j]==='{')d++;else if(s[j]==='}'){d--;if(d===0)break}}return[s.slice(i+1,j),j+1]}
+function M(s){
+  let out='',i=0;
+  while(i<s.length){
+    if(s.startsWith('____',i)){out+='<span class="blank"></span>';i+=4;continue}
+    if(s.startsWith('frac{',i)){const[a,n]=grp(s,i+4);const[b,n2]=grp(s,n);out+=`<span class="fr"><span>${M(a)}</span><span>${M(b)}</span></span>`;i=n2;continue}
+    const c=s[i];
+    if((c==='√'||c==='∛')&&s[i+1]==='{'){const[a,n]=grp(s,i+1);out+=`<span class="rad">${c==='∛'?'<span class="ix">3</span>':''}<span class="rs">√</span><span class="rc">${M(a)}</span></span>`;i=n;continue}
+    if(c==='^'&&s[i+1]==='{'){const[a,n]=grp(s,i+1);out+=`<sup>${M(a)}</sup>`;i=n;continue}
+    out+=/[A-Za-z]/.test(c)?`<i>${c}</i>`:esc(c);i++;
+  }
+  return out;
+}
+function T(s){return s.split('$').map((p,k)=>k%2?`<span class="m">${M(p)}</span>`:esc(p).replace(/____/g,'<span class="blank"></span>')).join('')}
+function R(o){return /[\u0600-\u06FF]/.test(o)?T(o):`<span class="m">${M(o)}</span>`}
+const rawLen=o=>o.replace(/\s|[{}^$]|frac|√|∛/g,'').length;
+
+/* ================== الرسومات التوضيحية ================== */
+const DEFS=`<defs>
+<linearGradient id="gC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#6366f1"/></linearGradient>
+<linearGradient id="gP" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient>
+<linearGradient id="gL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9f99d"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+<linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#f472b6"/></linearGradient>
+<filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>`;
+const DECO=`<g opacity=".55"><circle cx="40" cy="30" r="3" fill="#22d3ee"/><circle cx="90" cy="120" r="2.4" fill="#f472b6"/><circle cx="520" cy="36" r="3" fill="#a78bfa"/><circle cx="560" cy="118" r="2.4" fill="#fbbf24"/><circle cx="470" cy="140" r="2" fill="#22d3ee"/><circle cx="130" cy="22" r="2" fill="#a3e635"/></g>
+<path d="M20 80 H110 M490 80 H580" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4 6" opacity=".6"/>`;
+const svg=b=>`<div class="fig"><svg width="600" height="160" viewBox="0 0 600 160">${DEFS}${DECO}${b}</svg></div>`;
+const V={
+ rad:()=>svg(`<path d="M205 90 L224 80 L250 132 L290 22 L400 22" fill="none" stroke="url(#gC)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+  <rect x="308" y="46" width="84" height="14" rx="7" fill="#f472b6" opacity=".9"/><rect x="308" y="70" width="58" height="14" rx="7" fill="#a78bfa" opacity=".9"/><rect x="308" y="94" width="72" height="14" rx="7" fill="#22d3ee" opacity=".9"/>
+  <circle cx="450" cy="60" r="16" fill="none" stroke="#fbbf24" stroke-width="3" stroke-dasharray="5 5"/><circle cx="150" cy="100" r="9" fill="url(#gA)"/>`),
+ sq:()=>svg(`<rect x="245" y="26" width="110" height="110" rx="6" fill="rgba(34,211,238,.16)" stroke="url(#gC)" stroke-width="4" filter="url(#glow)"/>
+  <path d="M272.5 26V136M300 26V136M327.5 26V136M245 53.5H355M245 81H355M245 108.5H355" stroke="#67e8f9" stroke-width="1" opacity=".35"/>
+  <path d="M245 26 L355 136" stroke="#f472b6" stroke-width="2" stroke-dasharray="6 6" opacity=".8"/>
+  <path d="M245 148H355M245 143V153M355 143V153M226 26V136M221 26H231M221 136H231" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M245 126H255V136" fill="none" stroke="#a3e635" stroke-width="2.5"/>`),
+ rect:()=>svg(`<rect x="170" y="30" width="130" height="62" rx="5" fill="rgba(34,211,238,.28)" stroke="#22d3ee" stroke-width="2.5"/>
+  <rect x="300" y="30" width="130" height="62" rx="5" fill="rgba(167,139,250,.3)" stroke="#a78bfa" stroke-width="2.5"/>
+  <rect x="170" y="92" width="130" height="40" rx="5" fill="rgba(244,114,182,.28)" stroke="#f472b6" stroke-width="2.5"/>
+  <rect x="300" y="92" width="130" height="40" rx="5" fill="rgba(251,191,36,.28)" stroke="#fbbf24" stroke-width="2.5"/>
+  <path d="M170 18H430M170 13V23M300 13V23M430 13V23M446 30V132M441 30H451M441 92H451M441 132H451" stroke="#cbd5ff" stroke-width="2" stroke-linecap="round" opacity=".85"/>`),
+ tiles:()=>svg(`<rect x="110" y="26" width="104" height="104" rx="6" fill="url(#gC)" opacity=".85" stroke="#a5f3fc" stroke-width="2"/>
+  <rect x="236" y="26" width="26" height="104" rx="5" fill="url(#gP)" opacity=".9"/><rect x="270" y="26" width="26" height="104" rx="5" fill="url(#gP)" opacity=".9"/><rect x="304" y="26" width="26" height="104" rx="5" fill="url(#gP)" opacity=".9"/>
+  <g fill="url(#gA)"><rect x="362" y="26" width="26" height="26" rx="5"/><rect x="396" y="26" width="26" height="26" rx="5"/><rect x="430" y="26" width="26" height="26" rx="5"/><rect x="362" y="60" width="26" height="26" rx="5"/><rect x="396" y="60" width="26" height="26" rx="5"/><rect x="430" y="60" width="26" height="26" rx="5"/></g>
+  <path d="M362 104H456" stroke="#6366f1" stroke-width="2" stroke-dasharray="5 6"/>`),
+ cube:()=>svg(`<g filter="url(#glow)"><polygon points="300,18 372,46 300,74 228,46" fill="rgba(165,243,252,.75)" stroke="#e0f2fe" stroke-width="2"/>
+  <polygon points="228,46 300,74 300,146 228,118" fill="rgba(99,102,241,.8)" stroke="#c7d2fe" stroke-width="2"/>
+  <polygon points="300,74 372,46 372,118 300,146" fill="rgba(244,114,182,.75)" stroke="#fbcfe8" stroke-width="2"/></g>
+  <polygon points="150,104 178,115 150,126 122,115" fill="#a3e635" opacity=".85"/><polygon points="122,115 150,126 150,152 122,141" fill="#22d3ee" opacity=".7"/><polygon points="150,126 178,115 178,141 150,152" fill="#a78bfa" opacity=".7"/>
+  <polygon points="450,60 474,70 450,80 426,70" fill="#fbbf24" opacity=".85"/><polygon points="426,70 450,80 450,102 426,92" fill="#f472b6" opacity=".7"/><polygon points="450,80 474,70 474,92 450,102" fill="#8b5cf6" opacity=".7"/>`),
+ pow:()=>svg(`<g>
+  <rect x="150" y="116" width="46" height="18" rx="5" fill="url(#gC)"/><rect x="212" y="102" width="46" height="32" rx="5" fill="url(#gC)"/><rect x="274" y="82" width="46" height="52" rx="5" fill="url(#gP)"/><rect x="336" y="54" width="46" height="80" rx="5" fill="url(#gP)"/><rect x="398" y="18" width="46" height="116" rx="5" fill="url(#gA)"/></g>
+  <path d="M150 124 C250 120 330 98 421 14" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="3 7" stroke-linecap="round" filter="url(#glow)"/><path d="M130 140H470" stroke="#6366f1" stroke-width="2"/>`),
+ par:()=>svg(`<path d="M120 75H480M300 8V152" stroke="#6366f1" stroke-width="2" opacity=".8"/>
+  <path d="M170 18 Q300 222 430 18" fill="none" stroke="url(#gC)" stroke-width="6" stroke-linecap="round" filter="url(#glow)"/>
+  <circle cx="213" cy="75" r="9" fill="#fbbf24" filter="url(#glow)"/><circle cx="387" cy="75" r="9" fill="#f472b6" filter="url(#glow)"/><circle cx="300" cy="120" r="5" fill="#a3e635"/>
+  <path d="M213 82V120M387 82V120" stroke="#cbd5ff" stroke-width="1.5" stroke-dasharray="4 5" opacity=".6"/>`),
+ venn:()=>`<div class="fig"><svg width="600" height="160" viewBox="0 0 600 160">${DEFS}${DECO}
+  <ellipse cx="300" cy="80" rx="190" ry="68" fill="rgba(99,102,241,.14)" stroke="#818cf8" stroke-width="3" filter="url(#glow)"/>
+  <circle cx="232" cy="82" r="46" fill="rgba(34,211,238,.3)" stroke="#22d3ee" stroke-width="3"/>
+  <circle cx="368" cy="82" r="46" fill="rgba(244,114,182,.3)" stroke="#f472b6" stroke-width="3"/></svg>
+  <div class="venn-l" style="left:232px;top:82px;color:#a5f3fc">ℚ</div><div class="venn-l" style="left:368px;top:82px;color:#fbcfe8">ℚ′</div><div class="venn-l" style="left:300px;top:27px;color:#c7d2fe;font-size:24px">ℝ</div></div>`)
+};
+function NL(sp){
+  const[a,b]=sp.r,P=v=>6+(v-a)/(b-a)*88,step=(b-a)>14?2:1,AX=104;
+  let h='<div class="nl"><div class="ax"></div><div class="axl"></div><div class="axr"></div>';
+  for(let t=Math.ceil(a);t<=b;t+=step)h+=`<div class="tk" style="left:${P(t)}%"></div><div class="tl" style="left:${P(t)}%"><span class="m">${M(String(t).replace('-','−'))}</span></div>`;
+  const dot=(x,y,c,cl)=>`<div class="dt" style="left:${x}%;top:${y-4}px;border-color:${c};background:${cl?c:'#0a0c24'}"></div><div class="vl" style="left:${x}%;top:${y+14}px;height:${AX-y-14}px;border-color:${c}"></div>`;
+  (sp.iv||[]).forEach((iv,k)=>{
+    const[lo,hi,lc,hc]=iv,c=COL[k%3],y=AX-34-k*34,L=lo===null?2:P(lo),Rr=hi===null?98:P(hi);
+    h+=`<div class="bar" style="left:${L}%;width:${Rr-L}%;top:${y}px;background:${c}"></div>`;
+    h+=lo===null?`<div class="arrL" style="left:0.6%;top:${y-5}px;border-right-color:${c};border-left:0"></div>`:dot(L,y,c,lc==='c');
+    h+=hi===null?`<div class="arrR" style="right:0.6%;top:${y-5}px;border-left-color:${c};border-right:0"></div>`:dot(Rr,y,c,hc==='c');
+  });
+  (sp.pt||[]).forEach(p=>{h+=`<div class="pt" style="left:${P(p[0])}%"></div>`+(p[1]?`<div class="ptl" style="left:${P(p[0])}%"><span class="m">${M(p[1])}</span></div>`:'')});
+  return h+'</div>';
+}
+const L=(r,iv,pt)=>({k:'nl',r,iv,pt});
+const visual=v=>typeof v==='string'?V[v]():NL(v);
+
+/* ================== بنك الأسئلة (من الكتاب حتى نهاية الوحدة الثانية) ================== */
+const Q=(t,o,a,v)=>({t,o,a,v});
+const MODELS=[
+[ // ---------- النموذج الأول ----------
+Q("$ℚ ∩ ℚ′ = ____$",["ℕ","ℤ","∅","ℝ"],2,'venn'),
+Q("إذا كانت $x − 1 < √{19} < x$ ، $x ∈ ℤ$ فإن $x$ = ____",["3","4","5","6"],2,L([2,7],[],[[4.36,'√{19}']])),
+Q("مجموع الأعداد الصحيحة داخل الفترة $]−4 , 4[$ = ____",["4","−4","0","−16"],2,L([-6,6],[[-4,4,'o','o']])),
+Q("أي الفترات الآتية ينتمي إليها العدد $−√{7}$ ؟",["[−2 , −1]","[−3 , −2]","[−4 , −3]","[−7 , −6]"],1,L([-8,0],[[-3,-2,'c','c']],[[-2.65,'−√{7}']])),
+Q("$[−3 , 1] ∩ [−1 , 2] = ____$",["[−3 , 2]","[−3 , −1]","[1 , 2]","[−1 , 1]"],3,L([-4,3],[[-3,1,'c','c'],[-1,2,'c','c']])),
+Q("إذا كان $Y = ]−∞ , 8[$ فإن $Y′$ = ____",["]8 , ∞[","[0 , 8]","[8 , ∞[","]−∞ , 0["],2,L([0,12],[[null,8,'c','o']])),
+Q("إذا كان $a√{2} + 3√{2} = 5√{2}$ فإن قيمة $a$ = ____",["1","3","2","4"],2,'rad'),
+Q("ما المعكوس الضربي للعدد $2 − √{3}$ ؟",["2 − √{3}","√{3} + 2","−√{3} − 2","√{3} − 2"],1,'rad'),
+Q("$√{27} − √{3} = ____$",["√{24}","2√{3}","√{3}","3√{3}"],1,'rad'),
+Q("$(√{5} − √{2})(√{5} + √{2}) = ____$",["2","3","6","7"],1,'rad'),
+Q("إذا كان $3^{x} = 5$ فما قيمة $3^{x+1}$ ؟",["15","6","8","9"],0,'pow'),
+Q("إذا كان $5^{x−2} = 1$ فما قيمة $x$ ؟",["−1","−2","1","2"],3,'pow'),
+Q("أي من الأعداد التالية عدد غير نسبي؟",["√{6}","−√{9}","√{frac{9}{25}}","∛{27}"],0,'venn'),
+Q("العامل المشترك الأكبر للمقدار $12x^{2} + 8x$ هو ____",["4","6x^{2}","2x","4x"],3,'tiles'),
+Q("$5x^{2} + 15xy = 5x ( ____ + ____ )$",["x + y","3y − x","x + 3y","20x^{3}y"],2,'tiles'),
+Q("إذا كان $x + y = 10$ ، $a − b = 7$ فإن $x(a − b) − y(b − a) = ____$",["3","17","51","70"],3,'rect'),
+Q("أي مما يلي يمثل تحليل كثيرة الحدود $x^{2} + x − 20$ ؟",["(x − 4)(x + 5)","(x + 4)(x + 5)","(x − 4)(x − 5)","(x + 4)(x − 5)"],0,'tiles'),
+Q("إذا كان $6a^{2} + ka + 10 = (2a − 5)(3a − 2)$ فإن $k$ = ____",["15","19","−19","4"],2,'par'),
+Q("إذا كان $x + y = 5$ ، $x − y = 3$ فما قيمة المقدار $x^{2} − y^{2}$ ؟",["8","2","−15","15"],3,'sq'),
+Q("إذا كانت كثيرة الحدود $9x^{2} + bx + 1$ مربعا كاملا فإن $b$ تساوي ____",["±9","±4","±6","±12"],2,'sq'),
+Q("$x^{2} − ax + bx − ab = ____$",["(x − a)(x − b)","(x − a)(x + b)","(x + a)(x − b)","(x + a)(x + b)"],1,'rect'),
+Q("إذا كان $ax + by + ay + bx = 15$ ، $a + b = 3$ فإن $x + y$ = ____",["5","15","45","9"],0,'rect'),
+Q("العامل المشترك الأكبر للمقدار $12x^{3} + 6x^{2}$ هو ____",["6","3x^{2}","x^{2}","6x^{2}"],3,'tiles'),
+Q("إذا كان $y^{2} + ay + 18 = (y + 3)(y + b)$ فما قيمة $ab$ ؟",["54","27","3","15"],0,'par'),
+Q("مستطيل مساحته $(x^{2} − x − 12)$ سم² وطول أحد بعديه $(x + 3)$ سم فإن طول البعد الآخر = ____ سم.",["x + 3","x − 3","x − 4","x + 4"],2,'rect')
+],
+[ // ---------- النموذج الثاني ----------
+Q("ما تقدير العدد $∛{25}$ لأقرب عدد صحيح؟",["2","3","5","12.5"],1,L([0,5],[],[[2.92,'∛{25}']])),
+Q("طول ضلع مربع مساحته $6$ سم² هو عدد ____",["طبيعي","صحيح","نسبي","غير نسبي"],3,'sq'),
+Q("مجموع الأعداد الصحيحة داخل الفترة $]0 , 5[$ = ____",["5","8","0","10"],3,L([-1,6],[[0,5,'o','o']])),
+Q("مجموعة الأعداد الحقيقية غير الموجبة = ____",["]0 , ∞[","]−∞ , 0[","[0 , ∞[","]−∞ , 0]"],3,L([-4,4],[[null,0,'c','c']])),
+Q("$[2 , 5] − {2 , 5} = ____$",["]2 , 5]","[2 , 5[","]2 , 5[","∅"],2,L([0,7],[[2,5,'c','c']])),
+Q("ما الفترة الناتجة عن $]2 , 5[ ∪ {5}$ ؟",["]2 , 5]","]2 , 5[","[2 , 5]","[2 , 5["],0,L([0,7],[[2,5,'o','o']],[[5,'']])),
+Q("إذا كان $(5√{2})^{n} = 50$ فإن $n$ = ____",["4","3","2","1"],2,'rad'),
+Q("إذا كان $frac{x}{2√{3}} = frac{y}{5√{2}} = 1$ فإن قيمة $x^{2} + y^{2}$ = ____",["50","56","26","62"],3,'rad'),
+Q("$∛{81} + ∛{24} = ____$",["5∛{3}","∛{35}","∛{3}","3∛{5}"],0,'cube'),
+Q("ما العدد التالي في النمط: $√{3} , √{12} , √{27} , √{48} , ____$ ؟",["√{72}","√{75}","√{54}","√{64}"],1,'rad'),
+Q("إذا كان $2^{n} = 3$ فإن قيمة $8^{n}$ = ____",["24","27","16","8"],1,'pow'),
+Q("محيط المربع الذي مساحته $a$ سم² يساوي ____ سم.",["a^{4}","√{a}","4√{a}","2a"],2,'sq'),
+Q("$[2 , 5] ∩ {2 , 5} = ____$",["[2 , 5]","]2 , 5[","{2 , 5}","[2 , 5["],2,L([0,7],[[2,5,'c','c']])),
+Q("إذا كان $x − y = 3$ فإن قيمة $3x − 3y$ هي ____",["9","6","0","3"],0,'rect'),
+Q("مجموعة حل المعادلة $x(x − 2) = 0$ في $ℝ$ هي ____",["{2}","{−2}","{0 , 2}","{0 , −2}"],2,'par'),
+Q("كثيرة الحدود هي تعبير رياضي فيه جميع أسس متغيراته أعداد ____",["نسبية","صحيحة موجبة","صحيحة سالبة","حقيقية"],1,'tiles'),
+Q("إذا كان $(x − 3)(x + 5) = 0$ فأي مما يلي صحيح؟",["$x = 3$ أو $x = −5$","$x = −3$ أو $x = 5$","$x = 3$ أو $x = 5$","$x = −3$ أو $x = −5$"],0,'par'),
+Q("إذا كان $x^{2} + ax + 15 = (x + 5)(x + b)$ فما قيمة $a + b$ ؟",["3","11","24","5"],1,'tiles'),
+Q("إذا كان $x − y = 3$ ، $x^{3} − y^{3} = 18$ فإن $x^{2} + xy + y^{2}$ = ____",["8","−9","−6","6"],3,'cube'),
+Q("$x^{3} + 1 = (x + 1) ( ____ )$",["x^{2} − 1","x^{2} + 1","x^{2} − x + 1","x^{2} + x + 1"],2,'cube'),
+Q("إذا كان $x + a = 1$ ، $x^{2} + b = 7$ فإن $x^{3} + ax^{2} + bx + ab$ = ____",["1","7","16","12"],1,'rect'),
+Q("عند إكمال المربع للمقدار $x^{2} + 9$ نضيف إليه ____",["±3x","±6x","±9x","±12x"],1,'sq'),
+Q("إذا كان $(x − 5)$ أحد عاملي ثلاثية الحدود $(2x^{2} − 7x − 15)$ فما هو العامل الآخر؟",["2x − 3","x − 3","2x + 3","x + 5"],2,'tiles'),
+Q("$x^{3} − 8 = ( ____ )(x^{2} + 2x + 4)$",["x + 2","x + 4","x − 2","x − 4"],2,'cube'),
+Q("إذا كانت كثيرة الحدود $16x^{2} + kx + 1$ مربعا كاملا فإن $k$ = ____",["±1","±4","±8","16"],2,'sq')
+],
+[ // ---------- النموذج الثالث ----------
+Q("إذا كان $1 < √{n} < 2$ فأي مما يلي قيمة محتملة للعدد $n$ ؟",["1","2","4","8"],1,L([0,5],[[1,4,'o','o']])),
+Q("العدد الغير نسبي المحصور بين $3$ ، $4$ هو ____",["√{7}","√{12}","√{17}","√{3}"],1,L([2,5],[[3,4,'o','o']])),
+Q("إذا كانت $a ∈ ]2 , 5[$ فإن $a$ يمكن أن تساوي أيا مما يلي؟",["1","2","4","5"],2,L([0,6],[[2,5,'o','o']])),
+Q("$ℝ = ____$",["ℝ^{+} ∪ ℝ^{−}","ℝ^{+} ∩ ℝ^{−}","ℚ ∩ ℚ′","]−∞ , ∞["],3,'venn'),
+Q("إذا كان $x ∈ [−3 , 2]$ فإن $x^{2} ∈ ____$",["[0 , 4]","[0 , 9]","[4 , 9]","[−9 , 4]"],1,L([-4,3],[[-3,2,'c','c']])),
+Q("$√{3} + √{3} = ____$",["2√{3}","√{6}","√{9}","√{3}"],0,'rad'),
+Q("$(√{5} + √{3}) + (√{5} − √{3}) = ____$",["8","2","2√{5}","15"],2,'rad'),
+Q("$∛{3} + ∛{3} = ____$",["∛{24}","∛{12}","∛{3}","∛{6}"],0,'cube'),
+Q("إذا كان $x√{10} = √{250}$ فما قيمة $x$ ؟",["4","5","25","50"],1,'rad'),
+Q("$4^{4} + 4^{4} + 4^{4} + 4^{4} = ____$",["4^{5}","4^{16}","4^{20}","4^{4}"],0,'pow'),
+Q("إذا كان $frac{a}{3√{5}} = frac{b}{2√{3}} = 1$ فإن قيمة $a^{2} + b^{2}$ = ____",["35","57","15","6"],1,'rad'),
+Q("المعكوس الجمعي للعدد $4 − 3√{7}$ هو ____",["−3√{7} − 4","4 − 3√{7}","3√{7} + 4","−4 + 3√{7}"],3,'rad'),
+Q("إذا كان $√{7} + x = √{28}$ فإن قيمة $x$ = ____",["√{21}","−√{21}","√{7}","−√{7}"],2,'rad'),
+Q("$x(a − b) + y(a − b) = ____$",["(x + y)(a − b)","(x − y)(a − b)","(x + y)(a + b)","(x − y)(a + b)"],0,'rect'),
+Q("مجموعة حل المعادلة $x^{2} = x^{3}$ في $ℝ$ هي ____",["{0}","{1}","{−1 , 0}","{1 , 0}"],3,'par'),
+Q("إذا كان $(x − 2)$ أحد عاملي ثلاثية الحدود $(3x^{2} − 5x − 2)$ فما هو العامل الآخر؟",["x + 1","3x + 1","3x − 1","x − 1"],1,'tiles'),
+Q("مجموعة حل المعادلة $x^{2} − 4x + 3 = 0$ في $ℝ$ هي ____",["{1 , 3}","{−1 , −3}","{1 , −3}","{−1 , 3}"],0,'par'),
+Q("إذا كانت كثيرة الحدود $x^{2} + kx + 12$ قابلة للتحليل فإن $k$ يمكن أن تساوي ____",["17","3","13","12"],2,'tiles'),
+Q("إذا كان $x^{2} − a = (x − 4)(x + 4)$ فإن $a$ = ____",["−8","8","−16","16"],3,'sq'),
+Q("إذا كان $x − y = −2$ ، $x^{2} − y^{2} = −20$ فإن المتوسط الحسابي بين $x$ ، $y$ = ____",["3","4","5","10"],2,'sq'),
+Q("إذا كان $x^{2} − 2xy + y^{2} = 36$ فما قيمة $x − y$ ؟",["±6","−6","12","6"],0,'sq'),
+Q("$5x^{2} − 5 = ____$",["5(x − 1)(x + 1)","5(x − 1)^{2}","(x − 5)^{2}","(x − 5)(x + 5)"],0,'tiles'),
+Q("إذا كان $a + b = 2$ فإن $a^{3} + 3a^{2}b + 3ab^{2} + b^{3}$ = ____",["3","8","27","81"],1,'cube'),
+Q("إذا كانت $(4x^{2} − 12x + k)$ مربعا كاملا فإن $k$ = ____",["−9","9","−3","3"],1,'sq'),
+Q("إذا كان $a − b = 5$ ، $a^{2} − b^{2} = 20$ فما قيمة $√{a + b}$ ؟",["4","2","−2","±2"],1,'rad')
+]];
+const NAMES=['النموذج الأول','النموذج الثاني','النموذج الثالث'];
+
+/* ================== بناء الواجهة ================== */
+let cur=0;
+const $=id=>document.getElementById(id);
+function cardHTML(m,i,q){
+  const n=String(i+1).padStart(2,'0');
+  const c4=q.o.every(o=>rawLen(o)<=7);
+  const opts=q.o.map((o,k)=>`<div class="opt c${k}"><span class="lt">${LET[k]}</span><span class="ov">${R(o)}</span></div>`).join('');
+  return `<div class="export-card">
+    <div class="ec-head"><div class="qn"><small>سؤال</small><b>${n}</b></div>
+      <div class="ec-title"><span>امتحان شامل · الوحدتان الأولى والثانية</span><em>${NAMES[m]}</em></div></div>
+    <div class="banner">${visual(q.v)}<span class="fig-tag">شكل توضيحي</span></div>
+    <div class="qt">${T(q.t)}</div>
+    <div class="opts ${c4?'cols4':'cols2'}">${opts}</div>
+    <div class="ec-foot"><span>رياضيات · الصف الثاني الإعدادي</span><span class="dots"><i></i><i></i><i></i></span></div>
+  </div>`;
+}
+const ICON=`<svg viewBox="0 0 28 28" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+ <path class="tray" d="M4 19v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3"/>
+ <g class="arrow"><path d="M14 3v14"/><path d="M8 11l6 6 6-6"/></g>
+ <path class="spn" d="M14 3a11 11 0 1 0 11 11" stroke="#67e8f9"/>
+ <path class="ok" d="M6 14.5l5.5 5.5L22 8.5" stroke="#a3e635"/></svg>`;
+function render(){
+  const list=$('list');list.innerHTML='';
+  MODELS[cur].forEach((q,i)=>{
+    const a=document.createElement('article');a.className='q';a.style.animationDelay=Math.min(i*40,400)+'ms';
+    a.innerHTML=`<div class="fit">${cardHTML(cur,i,q)}</div>
+      <button class="exp" aria-label="تصدير السؤال كصورة"><span class="ring"></span><span class="core"></span>${ICON}<span class="tip">تصدير كصورة</span></button>
+      <div class="ans"><span class="lock">🔒 لا تظهر في الصورة</span><span>الإجابة الصحيحة:</span><b>${LET[q.a]}</b><span class="m">${R(q.o[q.a])}</span></div>`;
+    a.querySelector('.exp').onclick=()=>exportOne(cur,i,a.querySelector('.exp'));
+    list.appendChild(a);
+  });
+  fitAll();
+}
+function fitAll(){
+  document.querySelectorAll('.q').forEach(q=>{
+    const fit=q.querySelector('.fit'),card=fit.firstElementChild,s=Math.min(1,fit.clientWidth/960);
+    card.style.transform=`scale(${s})`;fit.style.height=(card.offsetHeight*s)+'px';
+  });
+}
+function tabs(){
+  $('tabs').innerHTML=NAMES.map((n,i)=>`<button class="tab ${i===cur?'on':''}" data-i="${i}">${n}</button>`).join('');
+  $('tabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{cur=+b.dataset.i;tabs();render();window.scrollTo({top:0,behavior:'smooth'})});
+}
+
+/* ================== التصدير ================== */
+async function fontsReady(){
+  try{await Promise.all([document.fonts.load('600 30px "IBM Plex Sans Arabic"'),document.fonts.load('400 30px "IBM Plex Sans Arabic"'),document.fonts.load('italic 500 30px "STIX Two Text"'),document.fonts.load('500 30px "STIX Two Text"'),document.fonts.load('30px "Noto Sans Math"'),document.fonts.load('700 30px "Space Grotesk"')]);await document.fonts.ready}catch(e){}
+}
+async function makeBlob(m,i){
+  await fontsReady();
+  const fmt=$('fmt').value,scale=+$('scale').value;
+  const host=document.createElement('div');host.innerHTML=cardHTML(m,i,MODELS[m][i]);
+  const clone=host.firstElementChild;$('stage').appendChild(clone);
+  try{
+    const canvas=await html2canvas(clone,{scale,backgroundColor:null,useCORS:true,logging:false});
+    return await new Promise(r=>canvas.toBlob(r,fmt==='webp'?'image/webp':'image/png',0.97));
+  }finally{clone.remove()}
+}
+function save(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+const pad=i=>String(i+1).padStart(2,'0');
+async function exportOne(m,i,btn){
+  if(btn.classList.contains('busy'))return;
+  btn.classList.remove('done');btn.classList.add('busy');
+  try{
+    const blob=await makeBlob(m,i);
+    save(blob,`نموذج-${m+1}-سؤال-${pad(i)}.${$('fmt').value}`);
+    btn.classList.add('done');setTimeout(()=>btn.classList.remove('done'),2200);
+  }catch(e){console.error(e);alert('حدث خطأ أثناء التصدير، تأكد من اتصال الإنترنت (الخطوط والمكتبات) وأعد المحاولة.')}
+  btn.classList.remove('busy');
+}
+$('zipBtn').onclick=async()=>{
+  const m=cur,n=MODELS[m].length,zip=new JSZip(),ext=$('fmt').value;
+  $('modal').classList.add('on');
+  try{
+    for(let i=0;i<n;i++){
+      $('mtxt').textContent=`${i+1} / ${n}`;$('mbar').style.width=((i)/n*100)+'%';
+      zip.file(`M${m+1}-Q${pad(i)}.${ext}`,await makeBlob(m,i));
+    }
+    $('mtxt').textContent='جارٍ الضغط…';$('mbar').style.width='100%';
+    save(await zip.generateAsync({type:'blob'}),`نموذج-${m+1}-الأسئلة.zip`);
+  }catch(e){console.error(e);alert('تعذّر إنشاء الملف.')}
+  $('modal').classList.remove('on');
+};
+$('showAns').onchange=e=>document.body.classList.toggle('hide-ans',!e.target.checked);
+window.addEventListener('resize',fitAll);
+tabs();render();
+document.fonts.ready.then(fitAll);
+</script>
+</body>
+</html>
