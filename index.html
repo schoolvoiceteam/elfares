@@ -122,6 +122,8 @@ body.hide-ans .ans{display:none}
 .banner{position:relative;height:176px;margin:20px 0 22px;border-radius:22px;display:flex;align-items:center;justify-content:center;overflow:hidden;
   background:radial-gradient(circle at 1px 1px,rgba(165,180,252,.24) 1.4px,rgba(165,180,252,0) 1.7px) 0 0/22px 22px,linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
   border:1.5px solid rgba(165,180,252,.28)}
+.banner.factor-image{height:220px;background:#0d1040}
+.banner.factor-image img{display:block;width:100%;height:100%;object-fit:cover}
 .fig-tag{position:absolute;top:10px;left:16px;font-size:13px;font-weight:500;color:#93c5fd;opacity:.85}
 .fig{position:relative;width:600px;height:160px;flex:none}
 .fig svg{position:absolute;left:0;top:0}
@@ -411,7 +413,10 @@ function cardHTML(m,i,q){
   const n=String(i+1).padStart(2,'0');
   const c4=q.o.every(o=>rawLen(o)<=7);
   const showVisual=ILLUSTRATED[m].has(i);
-  const figure=showVisual?`<div class="banner">${visual(q.v)}<span class="fig-tag">شكل توضيحي</span></div>`:'';
+  const isFactor17=m===0&&i===16;
+  const figure=showVisual?(isFactor17
+    ? `<div class="banner factor-image"><img src="assets/factoring-question-17.svg" alt="" loading="eager"><span class="fig-tag">شكل توضيحي</span></div>`
+    : `<div class="banner">${visual(q.v)}<span class="fig-tag">شكل توضيحي</span></div>`):'';
   const opts=q.o.map((o,k)=>`<div class="opt c${k}"><span class="lt">${LET[k]}</span><span class="ov">${R(o)}</span></div>`).join('');
   return `<div class="export-card">
     <div class="ec-head"><div class="qn"><small>سؤال</small><b>${n}</b></div>
