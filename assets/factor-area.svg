@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480">
-<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#17113d"/><stop offset="1" stop-color="#0c1532"/></linearGradient><linearGradient id="c" x2="1" y2="1"><stop stop-color="#22d3ee"/><stop offset="1" stop-color="#6366f1"/></linearGradient><linearGradient id="p" x2="1" y2="1"><stop stop-color="#f472b6"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs>
-<rect width="900" height="480" rx="34" fill="url(#bg)"/>
-<rect x="160" y="100" width="580" height="280" rx="16" fill="#22d3ee" fill-opacity=".12" stroke="url(#c)" stroke-width="9"/>
-<path d="M520 100V380" stroke="#f472b6" stroke-width="9"/>
-<path d="M160 240H520" stroke="#a78bfa" stroke-width="7" stroke-opacity=".8"/>
-<path d="M520 240H740" stroke="#67e8f9" stroke-width="7" stroke-opacity=".8"/>
-<path d="M160 100H520V240H160Z" fill="#22d3ee" fill-opacity=".13"/><path d="M520 100H740V380H520Z" fill="#f472b6" fill-opacity=".1"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240"><defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#17113d"/><stop offset="1" stop-color="#0c1532"/></linearGradient><linearGradient id="c" x2="1" y2="1"><stop stop-color="#22d3ee"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs><rect width="900" height="240" rx="26" fill="url(#bg)"/><rect x="160" y="36" width="580" height="168" rx="12" fill="#22d3ee" fill-opacity=".12" stroke="url(#c)" stroke-width="7"/><path d="M520 36V204M160 120H520" stroke="#f472b6" stroke-width="7"/><path d="M160 36H520V120H160Z" fill="#22d3ee" fill-opacity=".12"/><path d="M520 120H740V204H520Z" fill="#f472b6" fill-opacity=".1"/></svg>
