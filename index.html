@@ -82,7 +82,7 @@ main{max-width:1000px;margin:0 auto;padding:0 14px 60px}
 .exp .core{position:absolute;left:0;top:0;right:0;bottom:0;border-radius:50%;background:#0a0c24;z-index:-1;transition:.25s}
 .exp::after{content:"";position:absolute;left:0;top:0;right:0;bottom:0;border-radius:50%;box-shadow:0 0 0 0 rgba(34,211,238,.6);animation:pulse 2.2s infinite;z-index:-3}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,211,238,.55)}80%,100%{box-shadow:0 0 0 20px rgba(34,211,238,0)}}
-.exp svg{width:28px;height:28px;display:block;margin:auto;position:absolute;inset:0;overflow:visible}
+.exp svg{width:28px;height:28px;display:block;position:absolute;left:50%;top:50%;margin:-14px 0 0 -14px;overflow:visible}
 .exp .arrow{animation:bob 1.5s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(3px)}}
 .exp:hover .core{background:#171a4a}
@@ -122,23 +122,22 @@ body.hide-ans .ans{display:none}
 .banner{position:relative;height:176px;margin:20px 0 22px;border-radius:22px;display:flex;align-items:center;justify-content:center;overflow:hidden;
   background:radial-gradient(circle at 1px 1px,rgba(165,180,252,.24) 1.4px,rgba(165,180,252,0) 1.7px) 0 0/22px 22px,linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
   border:1.5px solid rgba(165,180,252,.28)}
-.banner.factor-image{height:220px;background:#0d1040}
-.banner.factor-image img{display:block;width:100%;height:100%;object-fit:cover}
 .fig-tag{position:absolute;top:10px;left:16px;font-size:13px;font-weight:500;color:#93c5fd;opacity:.85}
 .fig{position:relative;width:600px;height:160px;flex:none}
 .fig svg{position:absolute;left:0;top:0}
+.ec-head+.qt{margin-top:30px}
+.figl{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;direction:rtl;font-weight:600;line-height:1.2;text-align:center}
 .qt{font-size:36px;font-weight:600;line-height:1.8;color:#f8fafc;margin:4px 4px 24px}
 .m{font-family:'STIX Two Text','Noto Sans Math','Cambria Math',serif;font-weight:500;font-size:1.14em;direction:ltr;unicode-bidi:isolate;white-space:nowrap;display:inline-block;color:#c4f1ff}
 .m i{font-style:italic}
 .m sup{font-size:.66em;line-height:0;position:relative;top:-.12em;margin-left:1px}
 .fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;font-size:.88em;line-height:1.2}
 .fr>span:first-child{border-bottom:.07em solid currentColor;padding:0 .25em .06em}
-.fr>span:last-child{padding:.06em .25em 0}
-.rad{display:inline-flex;align-items:flex-start;white-space:nowrap;vertical-align:middle;line-height:1.2}
+.fr>span:last-child{padding:.22em .25em 0}
+.rad{display:inline-block;white-space:nowrap}
 .rad .ix{font-size:.55em;position:relative;top:-.62em;margin-right:-.1em}
-.rad .rs{display:inline-flex;flex:none;width:.82em;height:1.12em;align-items:stretch}
-.rad .rs svg{display:block;width:100%;height:100%;overflow:visible}
-.rad .rc{display:inline-block;border-top:.075em solid currentColor;padding:.045em .12em 0 .04em;margin-left:-.015em;position:relative;top:.045em;line-height:1.2}
+.rad .rs{display:inline-block;font-size:1.08em}
+.rad .rc{display:inline-block;border-top:.075em solid currentColor;padding:.05em .12em 0 .1em;margin-left:-.1em;line-height:1.2}
 .blank{display:inline-block;width:78px;height:0;border-bottom:3px dashed rgba(251,191,36,.9);margin:0 6px;vertical-align:-.1em}
 .opts{display:grid;gap:14px}
 .cols4{grid-template-columns:repeat(4,1fr)}
@@ -176,7 +175,7 @@ body.hide-ans .ans{display:none}
 .nl .pt{position:absolute;width:16px;height:16px;margin-left:-8px;top:96px;background:#fbbf24;transform:rotate(45deg);box-shadow:0 0 14px #fbbf24}
 .nl .ptl{position:absolute;top:140px;width:90px;margin-left:-45px;text-align:center;font-size:20px;color:#fde68a}
 .nl .ptl .m{color:#fde68a}
-.venn-l{position:absolute;font-family:'STIX Two Text','Noto Sans Math',serif;font-size:30px;font-weight:600;text-align:center;width:80px;margin-left:-40px;margin-top:-18px;line-height:1.2}
+.venn-l{direction:ltr;unicode-bidi:isolate;position:absolute;font-family:'STIX Two Text','Noto Sans Math',serif;font-size:30px;font-weight:600;text-align:center;width:80px;margin-left:-40px;margin-top:-18px;line-height:1.2}
 
 /* ============ تذييل ============ */
 footer{text-align:center;color:#64748b;font-size:13px;padding:10px 0 40px}
@@ -236,8 +235,7 @@ function M(s){
     if(s.startsWith('____',i)){out+='<span class="blank"></span>';i+=4;continue}
     if(s.startsWith('frac{',i)){const[a,n]=grp(s,i+4);const[b,n2]=grp(s,n);out+=`<span class="fr"><span>${M(a)}</span><span>${M(b)}</span></span>`;i=n2;continue}
     const c=s[i];
-    if((c==='√'||c==='∛')&&s[i+1]==='{'){const[a,n]=grp(s,i+1);out+=`<span class="rad">${c==='∛'?'<span class="ix">3</span>':''}<span class="rs"><svg viewBox="0 0 44 50" aria-hidden="true"><path d="M2 30 L9 30 L17 45 L30 3 L44 3" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter"/></svg></span><span class="rc">${M(a)}</span></span>`;i=n;continue}
-    if(c==='√'){let j=i+1;while(j<s.length&&/[0-9A-Za-z]/.test(s[j]))j++;if(j===i+1){out+=esc(c);i++;continue}const a=s.slice(i+1,j);out+=`<span class="rad"><span class="rs"><svg viewBox="0 0 44 50" aria-hidden="true"><path d="M2 30 L9 30 L17 45 L30 3 L44 3" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter"/></svg></span><span class="rc">${M(a)}</span></span>`;i=j;continue}
+    if((c==='√'||c==='∛')&&s[i+1]==='{'){const[a,n]=grp(s,i+1);out+=`<span class="rad">${c==='∛'?'<span class="ix">3</span>':''}<span class="rs">√</span><span class="rc">${M(a)}</span></span>`;i=n;continue}
     if(c==='^'&&s[i+1]==='{'){const[a,n]=grp(s,i+1);out+=`<sup>${M(a)}</sup>`;i=n;continue}
     out+=/[A-Za-z]/.test(c)?`<i>${c}</i>`:esc(c);i++;
   }
@@ -258,41 +256,24 @@ const DEFS=`<defs>
 const DECO=`<g opacity=".55"><circle cx="40" cy="30" r="3" fill="#22d3ee"/><circle cx="90" cy="120" r="2.4" fill="#f472b6"/><circle cx="520" cy="36" r="3" fill="#a78bfa"/><circle cx="560" cy="118" r="2.4" fill="#fbbf24"/><circle cx="470" cy="140" r="2" fill="#22d3ee"/><circle cx="130" cy="22" r="2" fill="#a3e635"/></g>
 <path d="M20 80 H110 M490 80 H580" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4 6" opacity=".6"/>`;
 const svg=b=>`<div class="fig"><svg width="600" height="160" viewBox="0 0 600 160">${DEFS}${DECO}${b}</svg></div>`;
+const lab=(x,y,html,c,s)=>`<div class="figl" style="left:${x}px;top:${y}px;color:${c||'#fff'};font-size:${s||26}px">${html}</div>`;
+const fig2=(body,labels)=>`<div class="fig"><svg width="600" height="160" viewBox="0 0 600 160">${DEFS}${body}</svg>${labels}</div>`;
 const V={
- rad:()=>svg(`<path d="M205 90 L224 80 L250 132 L290 22 L400 22" fill="none" stroke="url(#gC)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
-  <rect x="308" y="46" width="84" height="14" rx="7" fill="#f472b6" opacity=".9"/><rect x="308" y="70" width="58" height="14" rx="7" fill="#a78bfa" opacity=".9"/><rect x="308" y="94" width="72" height="14" rx="7" fill="#22d3ee" opacity=".9"/>
-  <circle cx="450" cy="60" r="16" fill="none" stroke="#fbbf24" stroke-width="3" stroke-dasharray="5 5"/><circle cx="150" cy="100" r="9" fill="url(#gA)"/>`),
- sq:()=>svg(`<rect x="245" y="26" width="110" height="110" rx="6" fill="rgba(34,211,238,.16)" stroke="url(#gC)" stroke-width="4" filter="url(#glow)"/>
-  <path d="M272.5 26V136M300 26V136M327.5 26V136M245 53.5H355M245 81H355M245 108.5H355" stroke="#67e8f9" stroke-width="1" opacity=".35"/>
-  <path d="M245 26 L355 136" stroke="#f472b6" stroke-width="2" stroke-dasharray="6 6" opacity=".8"/>
-  <path d="M245 148H355M245 143V153M355 143V153M226 26V136M221 26H231M221 136H231" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M245 126H255V136" fill="none" stroke="#a3e635" stroke-width="2.5"/>`),
- rect:()=>svg(`<rect x="170" y="30" width="130" height="62" rx="5" fill="rgba(34,211,238,.28)" stroke="#22d3ee" stroke-width="2.5"/>
-  <rect x="300" y="30" width="130" height="62" rx="5" fill="rgba(167,139,250,.3)" stroke="#a78bfa" stroke-width="2.5"/>
-  <rect x="170" y="92" width="130" height="40" rx="5" fill="rgba(244,114,182,.28)" stroke="#f472b6" stroke-width="2.5"/>
-  <rect x="300" y="92" width="130" height="40" rx="5" fill="rgba(251,191,36,.28)" stroke="#fbbf24" stroke-width="2.5"/>
-  <path d="M170 18H430M170 13V23M300 13V23M430 13V23M446 30V132M441 30H451M441 92H451M441 132H451" stroke="#cbd5ff" stroke-width="2" stroke-linecap="round" opacity=".85"/>`),
- tiles:()=>svg(`<rect x="110" y="26" width="104" height="104" rx="6" fill="url(#gC)" opacity=".85" stroke="#a5f3fc" stroke-width="2"/>
-  <rect x="236" y="26" width="26" height="104" rx="5" fill="url(#gP)" opacity=".9"/><rect x="270" y="26" width="26" height="104" rx="5" fill="url(#gP)" opacity=".9"/><rect x="304" y="26" width="26" height="104" rx="5" fill="url(#gP)" opacity=".9"/>
-  <g fill="url(#gA)"><rect x="362" y="26" width="26" height="26" rx="5"/><rect x="396" y="26" width="26" height="26" rx="5"/><rect x="430" y="26" width="26" height="26" rx="5"/><rect x="362" y="60" width="26" height="26" rx="5"/><rect x="396" y="60" width="26" height="26" rx="5"/><rect x="430" y="60" width="26" height="26" rx="5"/></g>
-  <path d="M362 104H456" stroke="#6366f1" stroke-width="2" stroke-dasharray="5 6"/>`),
- cube:()=>svg(`<g filter="url(#glow)"><polygon points="300,18 372,46 300,74 228,46" fill="rgba(165,243,252,.75)" stroke="#e0f2fe" stroke-width="2"/>
-  <polygon points="228,46 300,74 300,146 228,118" fill="rgba(99,102,241,.8)" stroke="#c7d2fe" stroke-width="2"/>
-  <polygon points="300,74 372,46 372,118 300,146" fill="rgba(244,114,182,.75)" stroke="#fbcfe8" stroke-width="2"/></g>
-  <polygon points="150,104 178,115 150,126 122,115" fill="#a3e635" opacity=".85"/><polygon points="122,115 150,126 150,152 122,141" fill="#22d3ee" opacity=".7"/><polygon points="150,126 178,115 178,141 150,152" fill="#a78bfa" opacity=".7"/>
-  <polygon points="450,60 474,70 450,80 426,70" fill="#fbbf24" opacity=".85"/><polygon points="426,70 450,80 450,102 426,92" fill="#f472b6" opacity=".7"/><polygon points="450,80 474,70 474,92 450,102" fill="#8b5cf6" opacity=".7"/>`),
- pow:()=>svg(`<g>
-  <rect x="150" y="116" width="46" height="18" rx="5" fill="url(#gC)"/><rect x="212" y="102" width="46" height="32" rx="5" fill="url(#gC)"/><rect x="274" y="82" width="46" height="52" rx="5" fill="url(#gP)"/><rect x="336" y="54" width="46" height="80" rx="5" fill="url(#gP)"/><rect x="398" y="18" width="46" height="116" rx="5" fill="url(#gA)"/></g>
-  <path d="M150 124 C250 120 330 98 421 14" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="3 7" stroke-linecap="round" filter="url(#glow)"/><path d="M130 140H470" stroke="#6366f1" stroke-width="2"/>`),
- par:()=>svg(`<path d="M120 75H480M300 8V152" stroke="#6366f1" stroke-width="2" opacity=".8"/>
-  <path d="M170 18 Q300 222 430 18" fill="none" stroke="url(#gC)" stroke-width="6" stroke-linecap="round" filter="url(#glow)"/>
-  <circle cx="213" cy="75" r="9" fill="#fbbf24" filter="url(#glow)"/><circle cx="387" cy="75" r="9" fill="#f472b6" filter="url(#glow)"/><circle cx="300" cy="120" r="5" fill="#a3e635"/>
-  <path d="M213 82V120M387 82V120" stroke="#cbd5ff" stroke-width="1.5" stroke-dasharray="4 5" opacity=".6"/>`),
+ gsq6:()=>fig2(`<rect x="240" y="22" width="120" height="120" rx="6" fill="rgba(34,211,238,.18)" stroke="#22d3ee" stroke-width="4"/>
+  <path d="M222 22V142M216 22H228M216 142H228" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>`,
+  lab(300,66,'المساحة','#a5f3fc',24)+lab(300,102,T('$6$ سم²'),'#fff',28)+lab(194,82,'؟','#fbbf24',40)),
+ gsqa:()=>fig2(`<rect x="240" y="22" width="120" height="120" rx="6" fill="rgba(34,211,238,.18)" stroke="#22d3ee" stroke-width="4"/>
+  <path d="M376 22V142M370 22H382M370 142H382" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" opacity="0"/>
+  <rect x="226" y="8" width="148" height="148" rx="10" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-dasharray="7 6"/>`,
+  lab(300,66,'المساحة','#a5f3fc',24)+lab(300,102,T('$a$ سم²'),'#fff',28)+lab(470,82,'المحيط = ؟','#fbbf24',26)),
+ grect:()=>fig2(`<rect x="170" y="34" width="260" height="96" rx="6" fill="rgba(34,211,238,.18)" stroke="#22d3ee" stroke-width="4"/>
+  <path d="M170 22H430M170 17V27M430 17V27M152 34V130M147 34H157M147 130H157" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>`,
+  lab(300,10,T('$x + 3$ سم'),'#fde68a',22)+lab(124,82,'؟','#fbbf24',40)+lab(300,62,'المساحة','#a5f3fc',22)+lab(300,100,T('$x^{2} − x − 12$ سم²'),'#fff',26)),
  venn:()=>`<div class="fig"><svg width="600" height="160" viewBox="0 0 600 160">${DEFS}${DECO}
   <ellipse cx="300" cy="80" rx="190" ry="68" fill="rgba(99,102,241,.14)" stroke="#818cf8" stroke-width="3" filter="url(#glow)"/>
   <circle cx="232" cy="82" r="46" fill="rgba(34,211,238,.3)" stroke="#22d3ee" stroke-width="3"/>
   <circle cx="368" cy="82" r="46" fill="rgba(244,114,182,.3)" stroke="#f472b6" stroke-width="3"/></svg>
-  <div class="venn-l" style="left:232px;top:82px;color:#a5f3fc">ℚ</div><div class="venn-l" style="left:368px;top:82px;color:#fbcfe8">ℚ′</div><div class="venn-l" style="left:300px;top:27px;color:#c7d2fe;font-size:24px">ℝ</div></div>`,
+  <div class="venn-l" style="left:232px;top:82px;color:#a5f3fc">ℚ</div><div class="venn-l" style="left:368px;top:82px;color:#fbcfe8">ℚ′</div><div class="venn-l" style="left:300px;top:27px;color:#c7d2fe;font-size:24px">ℝ</div></div>`
 };
 function NL(sp){
   const[a,b]=sp.r,P=v=>6+(v-a)/(b-a)*88,step=(b-a)>14?2:1,AX=104;
@@ -321,52 +302,52 @@ Q("مجموع الأعداد الصحيحة داخل الفترة $]−4 , 4[$ =
 Q("أي الفترات الآتية ينتمي إليها العدد $−√{7}$ ؟",["[−2 , −1]","[−3 , −2]","[−4 , −3]","[−7 , −6]"],1,L([-8,0],[[-3,-2,'c','c']],[[-2.65,'−√{7}']])),
 Q("$[−3 , 1] ∩ [−1 , 2] = ____$",["[−3 , 2]","[−3 , −1]","[1 , 2]","[−1 , 1]"],3,L([-4,3],[[-3,1,'c','c'],[-1,2,'c','c']])),
 Q("إذا كان $Y = ]−∞ , 8[$ فإن $Y′$ = ____",["]8 , ∞[","[0 , 8]","[8 , ∞[","]−∞ , 0["],2,L([0,12],[[null,8,'c','o']])),
-Q("إذا كان $a√{2} + 3√{2} = 5√{2}$ فإن قيمة $a$ = ____",["1","3","2","4"],2,'rad'),
-Q("ما المعكوس الضربي للعدد $2 − √{3}$ ؟",["2 − √{3}","√{3} + 2","−√{3} − 2","√{3} − 2"],1,'rad'),
-Q("$√{27} − √{3} = ____$",["√{24}","2√{3}","√{3}","3√{3}"],1,'rad'),
-Q("$(√{5} − √{2})(√{5} + √{2}) = ____$",["2","3","6","7"],1,'rad'),
-Q("إذا كان $3^{x} = 5$ فما قيمة $3^{x+1}$ ؟",["15","6","8","9"],0,'pow'),
-Q("إذا كان $5^{x−2} = 1$ فما قيمة $x$ ؟",["−1","−2","1","2"],3,'pow'),
+Q("إذا كان $a√{2} + 3√{2} = 5√{2}$ فإن قيمة $a$ = ____",["1","3","2","4"],2),
+Q("ما المعكوس الضربي للعدد $2 − √{3}$ ؟",["2 − √{3}","√{3} + 2","−√{3} − 2","√{3} − 2"],1),
+Q("$√{27} − √{3} = ____$",["√{24}","2√{3}","√{3}","3√{3}"],1),
+Q("$(√{5} − √{2})(√{5} + √{2}) = ____$",["2","3","6","7"],1),
+Q("إذا كان $3^{x} = 5$ فما قيمة $3^{x+1}$ ؟",["15","6","8","9"],0),
+Q("إذا كان $5^{x−2} = 1$ فما قيمة $x$ ؟",["−1","−2","1","2"],3),
 Q("أي من الأعداد التالية عدد غير نسبي؟",["√{6}","−√{9}","√{frac{9}{25}}","∛{27}"],0,'venn'),
-Q("العامل المشترك الأكبر للمقدار $12x^{2} + 8x$ هو ____",["4","6x^{2}","2x","4x"],3,'tiles'),
-Q("$5x^{2} + 15xy = 5x ( ____ + ____ )$",["x + y","3y − x","x + 3y","20x^{3}y"],2,'tiles'),
-Q("إذا كان $x + y = 10$ ، $a − b = 7$ فإن $x(a − b) − y(b − a) = ____$",["3","17","51","70"],3,'rect'),
-Q("أي مما يلي يمثل تحليل كثيرة الحدود $x^{2} + x − 20$ ؟",["(x − 4)(x + 5)","(x + 4)(x + 5)","(x − 4)(x − 5)","(x + 4)(x − 5)"],0,'tiles'),
-Q("إذا كان $6a^{2} + ka + 10 = (2a − 5)(3a − 2)$ فإن $k$ = ____",["15","19","−19","4"],2,'par'),
-Q("إذا كان $x + y = 5$ ، $x − y = 3$ فما قيمة المقدار $x^{2} − y^{2}$ ؟",["8","2","−15","15"],3,'sq'),
-Q("إذا كانت كثيرة الحدود $9x^{2} + bx + 1$ مربعا كاملا فإن $b$ تساوي ____",["±9","±4","±6","±12"],2,'sq'),
-Q("$x^{2} − ax + bx − ab = ____$",["(x − a)(x − b)","(x − a)(x + b)","(x + a)(x − b)","(x + a)(x + b)"],1,'rect'),
-Q("إذا كان $ax + by + ay + bx = 15$ ، $a + b = 3$ فإن $x + y$ = ____",["5","15","45","9"],0,'rect'),
-Q("العامل المشترك الأكبر للمقدار $12x^{3} + 6x^{2}$ هو ____",["6","3x^{2}","x^{2}","6x^{2}"],3,'tiles'),
-Q("إذا كان $y^{2} + ay + 18 = (y + 3)(y + b)$ فما قيمة $ab$ ؟",["54","27","3","15"],0,'par'),
-Q("مستطيل مساحته $(x^{2} − x − 12)$ سم² وطول أحد بعديه $(x + 3)$ سم فإن طول البعد الآخر = ____ سم.",["x + 3","x − 3","x − 4","x + 4"],2,'rect')
+Q("العامل المشترك الأكبر للمقدار $12x^{2} + 8x$ هو ____",["4","6x^{2}","2x","4x"],3),
+Q("$5x^{2} + 15xy = 5x ( ____ + ____ )$",["x + y","3y − x","x + 3y","20x^{3}y"],2),
+Q("إذا كان $x + y = 10$ ، $a − b = 7$ فإن $x(a − b) − y(b − a) = ____$",["3","17","51","70"],3),
+Q("أي مما يلي يمثل تحليل كثيرة الحدود $x^{2} + x − 20$ ؟",["(x − 4)(x + 5)","(x + 4)(x + 5)","(x − 4)(x − 5)","(x + 4)(x − 5)"],0),
+Q("إذا كان $6a^{2} + ka + 10 = (2a − 5)(3a − 2)$ فإن $k$ = ____",["15","19","−19","4"],2),
+Q("إذا كان $x + y = 5$ ، $x − y = 3$ فما قيمة المقدار $x^{2} − y^{2}$ ؟",["8","2","−15","15"],3),
+Q("إذا كانت كثيرة الحدود $9x^{2} + bx + 1$ مربعا كاملا فإن $b$ تساوي ____",["±9","±4","±6","±12"],2),
+Q("$x^{2} − ax + bx − ab = ____$",["(x − a)(x − b)","(x − a)(x + b)","(x + a)(x − b)","(x + a)(x + b)"],1),
+Q("إذا كان $ax + by + ay + bx = 15$ ، $a + b = 3$ فإن $x + y$ = ____",["5","15","45","9"],0),
+Q("العامل المشترك الأكبر للمقدار $12x^{3} + 6x^{2}$ هو ____",["6","3x^{2}","x^{2}","6x^{2}"],3),
+Q("إذا كان $y^{2} + ay + 18 = (y + 3)(y + b)$ فما قيمة $ab$ ؟",["54","27","3","15"],0),
+Q("مستطيل مساحته $(x^{2} − x − 12)$ سم² وطول أحد بعديه $(x + 3)$ سم فإن طول البعد الآخر = ____ سم.",["x + 3","x − 3","x − 4","x + 4"],2,'grect')
 ],
 [ // ---------- النموذج الثاني ----------
 Q("ما تقدير العدد $∛{25}$ لأقرب عدد صحيح؟",["2","3","5","12.5"],1,L([0,5],[],[[2.92,'∛{25}']])),
-Q("طول ضلع مربع مساحته $6$ سم² هو عدد ____",["طبيعي","صحيح","نسبي","غير نسبي"],3,'sq'),
+Q("طول ضلع مربع مساحته $6$ سم² هو عدد ____",["طبيعي","صحيح","نسبي","غير نسبي"],3,'gsq6'),
 Q("مجموع الأعداد الصحيحة داخل الفترة $]0 , 5[$ = ____",["5","8","0","10"],3,L([-1,6],[[0,5,'o','o']])),
 Q("مجموعة الأعداد الحقيقية غير الموجبة = ____",["]0 , ∞[","]−∞ , 0[","[0 , ∞[","]−∞ , 0]"],3,L([-4,4],[[null,0,'c','c']])),
 Q("$[2 , 5] − {2 , 5} = ____$",["]2 , 5]","[2 , 5[","]2 , 5[","∅"],2,L([0,7],[[2,5,'c','c']])),
 Q("ما الفترة الناتجة عن $]2 , 5[ ∪ {5}$ ؟",["]2 , 5]","]2 , 5[","[2 , 5]","[2 , 5["],0,L([0,7],[[2,5,'o','o']],[[5,'']])),
-Q("إذا كان $(5√{2})^{n} = 50$ فإن $n$ = ____",["4","3","2","1"],2,'rad'),
-Q("إذا كان $frac{x}{2√{3}} = frac{y}{5√{2}} = 1$ فإن قيمة $x^{2} + y^{2}$ = ____",["50","56","26","62"],3,'rad'),
-Q("$∛{81} + ∛{24} = ____$",["5∛{3}","∛{35}","∛{3}","3∛{5}"],0,'cube'),
-Q("ما العدد التالي في النمط: $√{3} , √{12} , √{27} , √{48} , ____$ ؟",["√{72}","√{75}","√{54}","√{64}"],1,'rad'),
-Q("إذا كان $2^{n} = 3$ فإن قيمة $8^{n}$ = ____",["24","27","16","8"],1,'pow'),
-Q("محيط المربع الذي مساحته $a$ سم² يساوي ____ سم.",["a^{4}","√{a}","4√{a}","2a"],2,'sq'),
+Q("إذا كان $(5√{2})^{n} = 50$ فإن $n$ = ____",["4","3","2","1"],2),
+Q("إذا كان $frac{x}{2√{3}} = frac{y}{5√{2}} = 1$ فإن قيمة $x^{2} + y^{2}$ = ____",["50","56","26","62"],3),
+Q("$∛{81} + ∛{24} = ____$",["5∛{3}","∛{35}","∛{3}","3∛{5}"],0),
+Q("ما العدد التالي في النمط: $√{3} , √{12} , √{27} , √{48} , ____$ ؟",["√{72}","√{75}","√{54}","√{64}"],1),
+Q("إذا كان $2^{n} = 3$ فإن قيمة $8^{n}$ = ____",["24","27","16","8"],1),
+Q("محيط المربع الذي مساحته $a$ سم² يساوي ____ سم.",["a^{4}","√{a}","4√{a}","2a"],2,'gsqa'),
 Q("$[2 , 5] ∩ {2 , 5} = ____$",["[2 , 5]","]2 , 5[","{2 , 5}","[2 , 5["],2,L([0,7],[[2,5,'c','c']])),
-Q("إذا كان $x − y = 3$ فإن قيمة $3x − 3y$ هي ____",["9","6","0","3"],0,'rect'),
-Q("مجموعة حل المعادلة $x(x − 2) = 0$ في $ℝ$ هي ____",["{2}","{−2}","{0 , 2}","{0 , −2}"],2,'par'),
-Q("كثيرة الحدود هي تعبير رياضي فيه جميع أسس متغيراته أعداد ____",["نسبية","صحيحة موجبة","صحيحة سالبة","حقيقية"],1,'tiles'),
-Q("إذا كان $(x − 3)(x + 5) = 0$ فأي مما يلي صحيح؟",["$x = 3$ أو $x = −5$","$x = −3$ أو $x = 5$","$x = 3$ أو $x = 5$","$x = −3$ أو $x = −5$"],0,'par'),
-Q("إذا كان $x^{2} + ax + 15 = (x + 5)(x + b)$ فما قيمة $a + b$ ؟",["3","11","24","5"],1,'tiles'),
-Q("إذا كان $x − y = 3$ ، $x^{3} − y^{3} = 18$ فإن $x^{2} + xy + y^{2}$ = ____",["8","−9","−6","6"],3,'cube'),
-Q("$x^{3} + 1 = (x + 1) ( ____ )$",["x^{2} − 1","x^{2} + 1","x^{2} − x + 1","x^{2} + x + 1"],2,'cube'),
-Q("إذا كان $x + a = 1$ ، $x^{2} + b = 7$ فإن $x^{3} + ax^{2} + bx + ab$ = ____",["1","7","16","12"],1,'rect'),
-Q("عند إكمال المربع للمقدار $x^{2} + 9$ نضيف إليه ____",["±3x","±6x","±9x","±12x"],1,'sq'),
-Q("إذا كان $(x − 5)$ أحد عاملي ثلاثية الحدود $(2x^{2} − 7x − 15)$ فما هو العامل الآخر؟",["2x − 3","x − 3","2x + 3","x + 5"],2,'tiles'),
-Q("$x^{3} − 8 = ( ____ )(x^{2} + 2x + 4)$",["x + 2","x + 4","x − 2","x − 4"],2,'cube'),
-Q("إذا كانت كثيرة الحدود $16x^{2} + kx + 1$ مربعا كاملا فإن $k$ = ____",["±1","±4","±8","16"],2,'sq')
+Q("إذا كان $x − y = 3$ فإن قيمة $3x − 3y$ هي ____",["9","6","0","3"],0),
+Q("مجموعة حل المعادلة $x(x − 2) = 0$ في $ℝ$ هي ____",["{2}","{−2}","{0 , 2}","{0 , −2}"],2),
+Q("كثيرة الحدود هي تعبير رياضي فيه جميع أسس متغيراته أعداد ____",["نسبية","صحيحة موجبة","صحيحة سالبة","حقيقية"],1),
+Q("إذا كان $(x − 3)(x + 5) = 0$ فأي مما يلي صحيح؟",["$x = 3$ أو $x = −5$","$x = −3$ أو $x = 5$","$x = 3$ أو $x = 5$","$x = −3$ أو $x = −5$"],0),
+Q("إذا كان $x^{2} + ax + 15 = (x + 5)(x + b)$ فما قيمة $a + b$ ؟",["3","11","24","5"],1),
+Q("إذا كان $x − y = 3$ ، $x^{3} − y^{3} = 18$ فإن $x^{2} + xy + y^{2}$ = ____",["8","−9","−6","6"],3),
+Q("$x^{3} + 1 = (x + 1) ( ____ )$",["x^{2} − 1","x^{2} + 1","x^{2} − x + 1","x^{2} + x + 1"],2),
+Q("إذا كان $x + a = 1$ ، $x^{2} + b = 7$ فإن $x^{3} + ax^{2} + bx + ab$ = ____",["1","7","16","12"],1),
+Q("عند إكمال المربع للمقدار $x^{2} + 9$ نضيف إليه ____",["±3x","±6x","±9x","±12x"],1),
+Q("إذا كان $(x − 5)$ أحد عاملي ثلاثية الحدود $(2x^{2} − 7x − 15)$ فما هو العامل الآخر؟",["2x − 3","x − 3","2x + 3","x + 5"],2),
+Q("$x^{3} − 8 = ( ____ )(x^{2} + 2x + 4)$",["x + 2","x + 4","x − 2","x − 4"],2),
+Q("إذا كانت كثيرة الحدود $16x^{2} + kx + 1$ مربعا كاملا فإن $k$ = ____",["±1","±4","±8","16"],2)
 ],
 [ // ---------- النموذج الثالث ----------
 Q("إذا كان $1 < √{n} < 2$ فأي مما يلي قيمة محتملة للعدد $n$ ؟",["1","2","4","8"],1,L([0,5],[[1,4,'o','o']])),
@@ -374,37 +355,28 @@ Q("العدد الغير نسبي المحصور بين $3$ ، $4$ هو ____",["
 Q("إذا كانت $a ∈ ]2 , 5[$ فإن $a$ يمكن أن تساوي أيا مما يلي؟",["1","2","4","5"],2,L([0,6],[[2,5,'o','o']])),
 Q("$ℝ = ____$",["ℝ^{+} ∪ ℝ^{−}","ℝ^{+} ∩ ℝ^{−}","ℚ ∩ ℚ′","]−∞ , ∞["],3,'venn'),
 Q("إذا كان $x ∈ [−3 , 2]$ فإن $x^{2} ∈ ____$",["[0 , 4]","[0 , 9]","[4 , 9]","[−9 , 4]"],1,L([-4,3],[[-3,2,'c','c']])),
-Q("$√{3} + √{3} = ____$",["2√{3}","√{6}","√{9}","√{3}"],0,'rad'),
-Q("$(√{5} + √{3}) + (√{5} − √{3}) = ____$",["8","2","2√{5}","15"],2,'rad'),
-Q("$∛{3} + ∛{3} = ____$",["∛{24}","∛{12}","∛{3}","∛{6}"],0,'cube'),
-Q("إذا كان $x√{10} = √{250}$ فما قيمة $x$ ؟",["4","5","25","50"],1,'rad'),
-Q("$4^{4} + 4^{4} + 4^{4} + 4^{4} = ____$",["4^{5}","4^{16}","4^{20}","4^{4}"],0,'pow'),
-Q("إذا كان $frac{a}{3√{5}} = frac{b}{2√{3}} = 1$ فإن قيمة $a^{2} + b^{2}$ = ____",["35","57","15","6"],1,'rad'),
-Q("المعكوس الجمعي للعدد $4 − 3√{7}$ هو ____",["−3√{7} − 4","4 − 3√{7}","3√{7} + 4","−4 + 3√{7}"],3,'rad'),
-Q("إذا كان $√{7} + x = √{28}$ فإن قيمة $x$ = ____",["√{21}","−√{21}","√{7}","−√{7}"],2,'rad'),
-Q("$x(a − b) + y(a − b) = ____$",["(x + y)(a − b)","(x − y)(a − b)","(x + y)(a + b)","(x − y)(a + b)"],0,'rect'),
-Q("مجموعة حل المعادلة $x^{2} = x^{3}$ في $ℝ$ هي ____",["{0}","{1}","{−1 , 0}","{1 , 0}"],3,'par'),
-Q("إذا كان $(x − 2)$ أحد عاملي ثلاثية الحدود $(3x^{2} − 5x − 2)$ فما هو العامل الآخر؟",["x + 1","3x + 1","3x − 1","x − 1"],1,'tiles'),
-Q("مجموعة حل المعادلة $x^{2} − 4x + 3 = 0$ في $ℝ$ هي ____",["{1 , 3}","{−1 , −3}","{1 , −3}","{−1 , 3}"],0,'par'),
-Q("إذا كانت كثيرة الحدود $x^{2} + kx + 12$ قابلة للتحليل فإن $k$ يمكن أن تساوي ____",["17","3","13","12"],2,'tiles'),
-Q("إذا كان $x^{2} − a = (x − 4)(x + 4)$ فإن $a$ = ____",["−8","8","−16","16"],3,'sq'),
-Q("إذا كان $x − y = −2$ ، $x^{2} − y^{2} = −20$ فإن المتوسط الحسابي بين $x$ ، $y$ = ____",["3","4","5","10"],2,'sq'),
-Q("إذا كان $x^{2} − 2xy + y^{2} = 36$ فما قيمة $x − y$ ؟",["±6","−6","12","6"],0,'sq'),
-Q("$5x^{2} − 5 = ____$",["5(x − 1)(x + 1)","5(x − 1)^{2}","(x − 5)^{2}","(x − 5)(x + 5)"],0,'tiles'),
-Q("إذا كان $a + b = 2$ فإن $a^{3} + 3a^{2}b + 3ab^{2} + b^{3}$ = ____",["3","8","27","81"],1,'cube'),
-Q("إذا كانت $(4x^{2} − 12x + k)$ مربعا كاملا فإن $k$ = ____",["−9","9","−3","3"],1,'sq'),
-Q("إذا كان $a − b = 5$ ، $a^{2} − b^{2} = 20$ فما قيمة $√{a + b}$ ؟",["4","2","−2","±2"],1,'rad')
+Q("$√{3} + √{3} = ____$",["2√{3}","√{6}","√{9}","√{3}"],0),
+Q("$(√{5} + √{3}) + (√{5} − √{3}) = ____$",["8","2","2√{5}","15"],2),
+Q("$∛{3} + ∛{3} = ____$",["∛{24}","∛{12}","∛{3}","∛{6}"],0),
+Q("إذا كان $x√{10} = √{250}$ فما قيمة $x$ ؟",["4","5","25","50"],1),
+Q("$4^{4} + 4^{4} + 4^{4} + 4^{4} = ____$",["4^{5}","4^{16}","4^{20}","4^{4}"],0),
+Q("إذا كان $frac{a}{3√{5}} = frac{b}{2√{3}} = 1$ فإن قيمة $a^{2} + b^{2}$ = ____",["35","57","15","6"],1),
+Q("المعكوس الجمعي للعدد $4 − 3√{7}$ هو ____",["−3√{7} − 4","4 − 3√{7}","3√{7} + 4","−4 + 3√{7}"],3),
+Q("إذا كان $√{7} + x = √{28}$ فإن قيمة $x$ = ____",["√{21}","−√{21}","√{7}","−√{7}"],2),
+Q("$x(a − b) + y(a − b) = ____$",["(x + y)(a − b)","(x − y)(a − b)","(x + y)(a + b)","(x − y)(a + b)"],0),
+Q("مجموعة حل المعادلة $x^{2} = x^{3}$ في $ℝ$ هي ____",["{0}","{1}","{−1 , 0}","{1 , 0}"],3),
+Q("إذا كان $(x − 2)$ أحد عاملي ثلاثية الحدود $(3x^{2} − 5x − 2)$ فما هو العامل الآخر؟",["x + 1","3x + 1","3x − 1","x − 1"],1),
+Q("مجموعة حل المعادلة $x^{2} − 4x + 3 = 0$ في $ℝ$ هي ____",["{1 , 3}","{−1 , −3}","{1 , −3}","{−1 , 3}"],0),
+Q("إذا كانت كثيرة الحدود $x^{2} + kx + 12$ قابلة للتحليل فإن $k$ يمكن أن تساوي ____",["17","3","13","12"],2),
+Q("إذا كان $x^{2} − a = (x − 4)(x + 4)$ فإن $a$ = ____",["−8","8","−16","16"],3),
+Q("إذا كان $x − y = −2$ ، $x^{2} − y^{2} = −20$ فإن المتوسط الحسابي بين $x$ ، $y$ = ____",["3","4","5","10"],2),
+Q("إذا كان $x^{2} − 2xy + y^{2} = 36$ فما قيمة $x − y$ ؟",["±6","−6","12","6"],0),
+Q("$5x^{2} − 5 = ____$",["5(x − 1)(x + 1)","5(x − 1)^{2}","(x − 5)^{2}","(x − 5)(x + 5)"],0),
+Q("إذا كان $a + b = 2$ فإن $a^{3} + 3a^{2}b + 3ab^{2} + b^{3}$ = ____",["3","8","27","81"],1),
+Q("إذا كانت $(4x^{2} − 12x + k)$ مربعا كاملا فإن $k$ = ____",["−9","9","−3","3"],1),
+Q("إذا كان $a − b = 5$ ، $a^{2} − b^{2} = 20$ فما قيمة $√{a + b}$ ؟",["4","2","−2","±2"],1)
 ]];
 const NAMES=['النموذج الأول','النموذج الثاني','النموذج الثالث'];
-
-// 10 أسئلة مصوّرة من كل نموذج = 30 من أصل 75 (40%)
-const ILLUSTRATED = [
-  new Set([0,1,2,3,4,5,12,13,16,24]),
-  new Set([0,1,2,3,4,5,11,18,19,23]),
-  new Set([0,1,2,3,15,16,18,21,22,23])
-];
-
-
 
 /* ================== بناء الواجهة ================== */
 let cur=0;
@@ -412,16 +384,11 @@ const $=id=>document.getElementById(id);
 function cardHTML(m,i,q){
   const n=String(i+1).padStart(2,'0');
   const c4=q.o.every(o=>rawLen(o)<=7);
-  const showVisual=ILLUSTRATED[m].has(i);
-  const isFactor17=m===0&&i===16;
-  const figure=showVisual?(isFactor17
-    ? `<div class="banner factor-image"><img src="assets/factoring-question-17.svg" alt="" loading="eager"><span class="fig-tag">شكل توضيحي</span></div>`
-    : `<div class="banner">${visual(q.v)}<span class="fig-tag">شكل توضيحي</span></div>`):'';
   const opts=q.o.map((o,k)=>`<div class="opt c${k}"><span class="lt">${LET[k]}</span><span class="ov">${R(o)}</span></div>`).join('');
   return `<div class="export-card">
     <div class="ec-head"><div class="qn"><small>سؤال</small><b>${n}</b></div>
       <div class="ec-title"><span>امتحان شامل · الوحدتان الأولى والثانية</span><em>${NAMES[m]}</em></div></div>
-    ${figure}
+    ${q.v?`<div class="banner">${visual(q.v)}<span class="fig-tag">شكل توضيحي</span></div>`:''}
     <div class="qt">${T(q.t)}</div>
     <div class="opts ${c4?'cols4':'cols2'}">${opts}</div>
     <div class="ec-foot"><span>رياضيات · الصف الثاني الإعدادي</span><span class="dots"><i></i><i></i><i></i></span></div>
@@ -476,7 +443,7 @@ async function exportOne(m,i,btn){
   btn.classList.remove('done');btn.classList.add('busy');
   try{
     const blob=await makeBlob(m,i);
-    save(blob,`نموذج-${m+1}-سؤال-${pad(i)}.${$('fmt').value}`);
+    save(blob,`model${m+1}-q${pad(i)}.${$('fmt').value}`);
     btn.classList.add('done');setTimeout(()=>btn.classList.remove('done'),2200);
   }catch(e){console.error(e);alert('حدث خطأ أثناء التصدير، تأكد من اتصال الإنترنت (الخطوط والمكتبات) وأعد المحاولة.')}
   btn.classList.remove('busy');
@@ -490,7 +457,7 @@ $('zipBtn').onclick=async()=>{
       zip.file(`M${m+1}-Q${pad(i)}.${ext}`,await makeBlob(m,i));
     }
     $('mtxt').textContent='جارٍ الضغط…';$('mbar').style.width='100%';
-    save(await zip.generateAsync({type:'blob'}),`نموذج-${m+1}-الأسئلة.zip`);
+    save(await zip.generateAsync({type:'blob'}),`model${m+1}-questions.zip`);
   }catch(e){console.error(e);alert('تعذّر إنشاء الملف.')}
   $('modal').classList.remove('on');
 };
