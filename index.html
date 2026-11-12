@@ -125,6 +125,8 @@ body.hide-ans .ans{display:none}
 .fig-tag{position:absolute;top:10px;left:16px;font-size:13px;font-weight:500;color:#93c5fd;opacity:.85}
 .fig{position:relative;width:600px;height:160px;flex:none}
 .fig svg{position:absolute;left:0;top:0}
+.asset-fig{width:600px;height:160px}
+.asset-fig img{display:block;width:100%;height:100%;object-fit:fill}
 .qt{font-size:36px;font-weight:600;line-height:1.8;color:#f8fafc;margin:4px 4px 24px}
 .m{font-family:'STIX Two Text','Noto Sans Math','Cambria Math',serif;font-weight:500;font-size:1.14em;direction:ltr;unicode-bidi:isolate;white-space:nowrap;display:inline-block;color:#c4f1ff}
 .m i{font-style:italic}
@@ -132,10 +134,11 @@ body.hide-ans .ans{display:none}
 .fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;font-size:.88em;line-height:1.2}
 .fr>span:first-child{border-bottom:.07em solid currentColor;padding:0 .25em .06em}
 .fr>span:last-child{padding:.06em .25em 0}
-.rad{display:inline-block;white-space:nowrap}
+.rad{display:inline-flex;align-items:flex-start;white-space:nowrap;vertical-align:middle;line-height:1.2}
 .rad .ix{font-size:.55em;position:relative;top:-.62em;margin-right:-.1em}
-.rad .rs{display:inline-block;font-size:1.08em}
-.rad .rc{display:inline-block;border-top:.075em solid currentColor;padding:.05em .12em 0 .1em;margin-left:-.1em;line-height:1.2}
+.rad .rs{display:inline-flex;flex:none;width:.82em;height:1.12em;align-items:stretch}
+.rad .rs svg{display:block;width:100%;height:100%;overflow:visible}
+.rad .rc{display:inline-block;border-top:.075em solid currentColor;padding:.045em .12em 0 .04em;margin-left:-.015em;position:relative;top:.045em;line-height:1.2}
 .blank{display:inline-block;width:78px;height:0;border-bottom:3px dashed rgba(251,191,36,.9);margin:0 6px;vertical-align:-.1em}
 .opts{display:grid;gap:14px}
 .cols4{grid-template-columns:repeat(4,1fr)}
@@ -233,7 +236,8 @@ function M(s){
     if(s.startsWith('____',i)){out+='<span class="blank"></span>';i+=4;continue}
     if(s.startsWith('frac{',i)){const[a,n]=grp(s,i+4);const[b,n2]=grp(s,n);out+=`<span class="fr"><span>${M(a)}</span><span>${M(b)}</span></span>`;i=n2;continue}
     const c=s[i];
-    if((c==='√'||c==='∛')&&s[i+1]==='{'){const[a,n]=grp(s,i+1);out+=`<span class="rad">${c==='∛'?'<span class="ix">3</span>':''}<span class="rs">√</span><span class="rc">${M(a)}</span></span>`;i=n;continue}
+    if((c==='√'||c==='∛')&&s[i+1]==='{'){const[a,n]=grp(s,i+1);out+=`<span class="rad">${c==='∛'?'<span class="ix">3</span>':''}<span class="rs"><svg viewBox="0 0 44 50" aria-hidden="true"><path d="M2 30 L9 30 L17 45 L30 3 L44 3" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter"/></svg></span><span class="rc">${M(a)}</span></span>`;i=n;continue}
+    if(c==='√'){let j=i+1;while(j<s.length&&/[0-9A-Za-z]/.test(s[j]))j++;if(j===i+1){out+=esc(c);i++;continue}const a=s.slice(i+1,j);out+=`<span class="rad"><span class="rs"><svg viewBox="0 0 44 50" aria-hidden="true"><path d="M2 30 L9 30 L17 45 L30 3 L44 3" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="miter"/></svg></span><span class="rc">${M(a)}</span></span>`;i=j;continue}
     if(c==='^'&&s[i+1]==='{'){const[a,n]=grp(s,i+1);out+=`<sup>${M(a)}</sup>`;i=n;continue}
     out+=/[A-Za-z]/.test(c)?`<i>${c}</i>`:esc(c);i++;
   }
@@ -400,6 +404,16 @@ const ILLUSTRATED = [
   new Set([0,1,2,3,15,16,18,21,22,23])
 ];
 
+// رسومات مخصصة للأسئلة التي تحتاج تمثيلاً بصريًا مباشرًا
+const ASSET_VISUALS = {
+  '0-0':'assets/sets-disjoint.svg',
+  '0-12':'assets/sets-disjoint.svg',
+  '0-13':'assets/algebra-tiles.svg',
+  '0-16':'assets/factor-area.svg',
+  '2-3':'assets/sets-disjoint.svg'
+};
+const assetFigure = src => `<div class="fig asset-fig"><img src="${src}" alt="" loading="eager"></div>`;
+
 /* ================== بناء الواجهة ================== */
 let cur=0;
 const $=id=>document.getElementById(id);
@@ -407,7 +421,8 @@ function cardHTML(m,i,q){
   const n=String(i+1).padStart(2,'0');
   const c4=q.o.every(o=>rawLen(o)<=7);
   const showVisual=ILLUSTRATED[m].has(i);
-  const figure=showVisual?`<div class="banner">${visual(q.v)}<span class="fig-tag">شكل توضيحي</span></div>`:'';
+  const art=ASSET_VISUALS[`${m}-${i}`]?assetFigure(ASSET_VISUALS[`${m}-${i}`]):visual(q.v);
+  const figure=showVisual?`<div class="banner">${art}<span class="fig-tag">شكل توضيحي</span></div>`:'';
   const opts=q.o.map((o,k)=>`<div class="opt c${k}"><span class="lt">${LET[k]}</span><span class="ov">${R(o)}</span></div>`).join('');
   return `<div class="export-card">
     <div class="ec-head"><div class="qn"><small>سؤال</small><b>${n}</b></div>
